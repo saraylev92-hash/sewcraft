@@ -277,7 +277,7 @@ function FabricFinder({ projects, cards }: { projects: FabricProject[]; cards: C
         {res.length === 0 && <li className="text-ink-soft">Nothing fits that piece at the default size. Try a larger amount or smaller custom size.</li>}
         {res.map(({ p, usable }) => (
           <li key={p.id}>
-            <a href={`/projects/${p.id}`} className="block rounded-xl bg-sage-soft p-3 hover:bg-[#d9e3d1]">
+            <a href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/projects/${p.id}/`} className="block rounded-xl bg-sage-soft p-3 hover:bg-[#d9e3d1]">
               <span className="font-semibold">{cards.find((c) => c.id === p.id)?.title ?? p.title}</span>
               <span className="block text-xs text-ink-soft">Covers: {usable.map((u) => `${u.material.name.split("—")[0].trim()} (${fabricAmount(u.need!.totalCm, units)})`).join(", ")}</span>
             </a>
