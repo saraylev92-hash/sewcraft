@@ -10,7 +10,7 @@ const body = localFont({ src: "./fonts/DMSans-Variable-latin.woff2", variable: "
 export const metadata: Metadata = {
   title: { default: "SewCraft — Your next creation starts here", template: "%s · SewCraft" },
   description: "Discover, prepare, measure, cut and sew — guided sewing projects with accurate patterns.",
-  manifest: "/manifest.webmanifest",
+  manifest: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/manifest.webmanifest`,
 };
 
 export const viewport: Viewport = { themeColor: "#faf6ef", width: "device-width", initialScale: 1 };
