@@ -19,7 +19,11 @@ const collect = (els: SceneEl[]) => els.forEach((e) => {
   if (e.k === "label" && /[A-Za-z]/.test(e.text)) strings[e.text] = e.text;
   else if ("label" in e && typeof e.label === "string" && /[A-Za-z]/.test(e.label)) strings[e.label] = e.label;
 });
-p.steps.forEach((s) => s.visual.type === "scene" && collect(s.visual.scene.els));
+p.steps.forEach((s) => {
+  if (s.visual.type !== "scene") return;
+  collect(s.visual.scene.els);
+  s.visual.frames?.forEach((f) => { collect(f.els); strings[f.caption] = f.caption; });
+});
 p.gallery.forEach((g) => collect(g.scene.els));
 
 const def = <T,>(o: T) => JSON.parse(JSON.stringify(o)) as T; // drops undefined

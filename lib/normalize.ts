@@ -2,6 +2,7 @@
 // Project: resolves catalog tools ("iron", "seam-ripper?"), the "thread" material shorthand, defaults,
 // and expands illustration templates into scenes. Client-safe — used by the server loader and the builder.
 import { expandTemplate, templateAlt } from "./templates";
+import { animationFor } from "./animations";
 import type { Material, Project, Step, Tool, Visual } from "./types";
 
 export type ToolCatalog = Record<string, { name: string; why: string; substitutes?: string[] }>;
@@ -33,7 +34,8 @@ export function normalizeProject(raw: any, catalog: ToolCatalog): { project: Pro
       try {
         const els = expandTemplate(visual.name, visual.args);
         alt ||= templateAlt(visual.name, visual.args);
-        visual = { type: "scene", scene: { els } };
+        const frames = animationFor(visual.name, visual.args);
+        visual = frames ? { type: "scene", scene: { els }, frames } : { type: "scene", scene: { els } };
       } catch (e) {
         issues.push(`Step ${i + 1}: ${(e as Error).message}`);
         visual = { type: "missing" };

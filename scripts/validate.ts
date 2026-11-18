@@ -66,7 +66,7 @@ function checkTranslation(p: Project, tr: ProjectTranslation) {
   len("gallery", tr.gallery, p.gallery); len("finished.dims", tr.finished?.dims, p.finished.dims);
   const texts = new Set<string>();
   const collect = (els: SceneEl[]) => els.forEach((e) => { if (e.k === "label") texts.add(e.text); else if ("label" in e && typeof e.label === "string") texts.add(e.label); });
-  p.steps.forEach((s) => s.visual.type === "scene" && collect(s.visual.scene.els)); p.gallery.forEach((g) => collect(g.scene.els));
+  p.steps.forEach((s) => { if (s.visual.type !== "scene") return; collect(s.visual.scene.els); s.visual.frames?.forEach((f) => { collect(f.els); texts.add(f.caption); }); }); p.gallery.forEach((g) => collect(g.scene.els));
   Object.keys(tr.strings ?? {}).forEach((k) => { if (!texts.has(k)) err(`strings: "${k}" does not appear in any illustration`); });
   return out;
 }

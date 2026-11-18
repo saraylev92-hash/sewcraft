@@ -2,7 +2,9 @@
 import type { Step } from "@/lib/types";
 import type { MaterialNeed } from "@/lib/needs";
 import type { Units } from "@/lib/types";
+import { useState } from "react";
 import SceneView from "../scene/SceneView";
+import { SceneAnimation, StepVideo } from "../scene/StepDemo";
 import LayoutView from "../LayoutView";
 import type { Skin } from "@/lib/fabrics";
 import { useT, type MessageKey } from "@/lib/i18n";
@@ -17,7 +19,44 @@ export default function StepVisual({ step, tones, vars, units, needs, contrast, 
 }) {
   const t = useT();
   const v = step.visual;
-  if (v.type === "scene") return <SceneView scene={v.scene} tones={tones} vars={vars} units={units} title={step.alt} contrast={contrast} legend={legend} skins={skins} />;
+  // Steps with an animated demo and/or a real video get a small switch: demo · illustration · video.
+  const modes = [
+    ...(v.type === "scene" && v.frames && !compact ? (["demo"] as const) : []),
+    "still" as const,
+    ...(step.video ? (["video"] as const) : []),
+  ];
+  const [mode, setMode] = useState<"demo" | "still" | "video">(modes[0]);
+  const m = modes.includes(mode as never) ? mode : modes[0];
+  const still = v.type === "scene"
+    ? <SceneView scene={v.scene} tones={tones} vars={vars} units={units} title={step.alt} contrast={contrast} legend={legend} skins={skins} />
+    : null;
+  if (modes.length > 1) {
+    return (
+      <div>
+        <div className="flex gap-1 px-3 pt-2" role="group" aria-label={t("project.demo.view")}>
+          {modes.map((k) => (
+            <button key={k} type="button" aria-pressed={m === k} onClick={() => setMode(k)}
+              className={`min-h-[32px] rounded-full px-3 text-xs font-semibold ${m === k ? "bg-ink text-cream" : "text-ink-soft hover:bg-beige"}`}>
+              {t(k === "demo" ? "project.demo.tabDemo" : k === "video" ? "project.demo.tabVideo" : "project.demo.tabStill")}
+            </button>
+          ))}
+        </div>
+        {m === "demo" && v.type === "scene" && v.frames ? <SceneAnimation frames={v.frames} tones={tones} vars={vars} units={units} title={step.alt} contrast={contrast} skins={skins} />
+          : m === "video" && step.video ? <StepVideo src={step.video.src} title={step.video.title ?? step.title} />
+          : still ?? <StepVisualInner step={step} tones={tones} vars={vars} units={units} needs={needs} compact={compact} skins={skins} />}
+      </div>
+    );
+  }
+  if (still) return still;
+  return <StepVisualInner step={step} tones={tones} vars={vars} units={units} needs={needs} compact={compact} skins={skins} />;
+}
+
+function StepVisualInner({ step, vars, units, needs, compact, skins }: {
+  step: Step; tones: Record<string, string>; vars: Record<string, number>; units: Units; needs: MaterialNeed[]; compact?: boolean; skins?: Record<string, Skin>;
+}) {
+  const t = useT();
+  const v = step.visual;
+  void vars;
   if (v.type === "layout") {
     const n = needs.find((x) => x.material.id === v.materialId);
     if (!n) return <Missing />;
