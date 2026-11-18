@@ -12,7 +12,7 @@ export default function UnitToggle({ className = "" }: { className?: string }) {
           key={u}
           aria-pressed={units === u}
           onClick={() => update((s) => void (s.profile.units = u))}
-          className={`min-h-[32px] rounded-full px-3 ${units === u ? "bg-ink text-cream" : "text-ink-soft"}`}
+          className={`min-h-[32px] rounded-full px-2.5 sm:px-3 ${units === u ? "bg-ink text-cream" : "text-ink-soft"}`}
         >
           {u === "metric" ? "cm" : "in"}
         </button>

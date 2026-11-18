@@ -5,7 +5,7 @@
 //
 // Usage in components:   const t = useT();  t("nav.explore")  t("project.steps", { n: 5 })
 // Outside React (toasts, lib helpers):  tr("toast.saved")
-import { getState, useStore } from "../store";
+import { useStore } from "../store";
 import { MESSAGES, type MessageKey } from "./messages";
 
 export type Lang = "en" | "he";
@@ -37,9 +37,17 @@ export function useT() {
   return (key: MessageKey, vars?: Vars) => translate(lang, key, vars);
 }
 
-/** Non-React translation (toasts, helpers called from event handlers). */
+// Language used by tr(). It stays "en" until AppShell has hydrated, so render-time tr() calls produce the
+// same text as the static HTML (React would otherwise report a hydration mismatch). AppShell then sets it
+// and remounts the page under the new language.
+let active: Lang = "en";
+export function setActiveLang(l: Lang) {
+  active = l;
+}
+
+/** Non-hook translation (toasts, helpers, label getters). */
 export function tr(key: MessageKey, vars?: Vars): string {
-  return translate(getState().profile.lang ?? "en", key, vars);
+  return translate(active, key, vars);
 }
 
 export function dirOf(lang: Lang): "ltr" | "rtl" {

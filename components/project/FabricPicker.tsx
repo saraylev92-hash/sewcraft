@@ -17,7 +17,8 @@ const PRESET_KEYS: Record<string, MessageKey> = {
 const ring = (on: boolean) =>
   `relative grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-xl border-2 text-[10px] font-semibold leading-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${on ? "border-terra ring-2 ring-terra/40" : "border-line"}`;
 
-export default function FabricPicker({ p, ps }: { p: Project; ps: ReturnType<typeof useProject> }) {
+/** `compact`: used in the guided-sew top bar panel, without the card frame and live preview (the step itself is the preview). */
+export default function FabricPicker({ p, ps, compact }: { p: Project; ps: ReturnType<typeof useProject>; compact?: boolean }) {
   const t = useT();
   const stash = useStore((s) => s.stash);
   const mats = p.materials.filter((m) => m.kind === "fabric" || m.kind === "interfacing");
@@ -32,17 +33,22 @@ export default function FabricPicker({ p, ps }: { p: Project; ps: ReturnType<typ
       x.fabrics = Object.keys(f).length ? f : undefined;
     });
 
+  const rows = (
+    <div className="space-y-5">
+      {mats.map((m) => (
+        <Row key={m.id} name={m.name} swatch={m.swatch} choice={fabrics?.[m.id]}
+          stash={stash} onChange={(ch) => set(m.id, ch)} />
+      ))}
+    </div>
+  );
+  if (compact) return rows;
+
   return (
     <section className="card p-4 sm:p-5" aria-labelledby="fab-h">
       <h3 id="fab-h" className="font-display text-xl font-semibold">{t("project.fabricPicker.title")}</h3>
       <p className="mt-1 text-sm text-ink-soft">{t("project.fabricPicker.sub")}</p>
       <div className="mt-4 grid gap-5 lg:grid-cols-[1fr_240px]">
-        <div className="space-y-5">
-          {mats.map((m) => (
-            <Row key={m.id} name={m.name} swatch={m.swatch} choice={fabrics?.[m.id]}
-              stash={stash} onChange={(ch) => set(m.id, ch)} />
-          ))}
-        </div>
+        {rows}
         {scene && (
           <figure className="self-start overflow-hidden rounded-xl border border-line" aria-label={t("project.fabricPicker.live")}>
             <SceneView scene={scene} tones={ps.tones} skins={ps.skins} vars={ps.vars} units={ps.units} title={t("project.fabricPicker.previewTitle", { title: p.title })} />

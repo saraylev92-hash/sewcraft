@@ -16,7 +16,7 @@ export default function LangToggle({ className = "" }: { className?: string }) {
           aria-label={l.label}
           title={l.label}
           onClick={() => update((s) => void (s.profile.lang = l.id))}
-          className={`min-h-[32px] rounded-full px-3 ${lang === l.id ? "bg-ink text-cream" : "text-ink-soft"}`}
+          className={`min-h-[32px] rounded-full px-2.5 sm:px-3 ${lang === l.id ? "bg-ink text-cream" : "text-ink-soft"}`}
         >
           {l.short}
         </button>

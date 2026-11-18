@@ -61,3 +61,26 @@ If you're unsure about a term, add it here with a `?` instead of making one up.
 | beginner / standard / expert (level) | מתחילים / רגיל / מתקדמים |
 | test-sewn | נתפר לבדיקה |
 | editor-reviewed | נבדק על ידי העורכת |
+
+## Terms added while translating the interface (please check)
+| English | עברית |
+|---|---|
+| overlocker / serger | אוברלוק |
+| rotary cutter & mat | סכין גלגלת ומשטח גזירה |
+| quilting cotton | כותנה לקווילטינג |
+| canvas | קנבס |
+| denim | ג׳ינס |
+| lawn | לאון |
+| twill | טוויל |
+| rayon | ריון |
+| shrinkage | התכווצות |
+| one-way print / nap | דוגמה חד־כיוונית / פוך |
+| batting | ריפוד (באטינג) |
+| notion (one item) | אביזר |
+| difficulty: beginner / intermediate / advanced | מתחילים / בינוני / מתקדמים |
+| stages: preparation / measuring & cutting / sewing / assembly / finishing | הכנה / מדידה וגזירה / תפירה / הרכבה / גימור |
+| safety margin (fabric to buy) | מרווח ביטחון |
+| print tile (page of the printed pattern) | עמוד גזרה |
+| gingham / plaid / chevron | גינגהאם / משבצות סקוטיות / שברון |
+| progress photos / journal | תמונות התקדמות / יומן |
+| instruction detail (level) | רמת פירוט ההוראות |

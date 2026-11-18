@@ -14,6 +14,7 @@ import UnitToggle from "../UnitToggle";
 import GlossaryText, { findTerms } from "./GlossaryText";
 import Timer from "./Timer";
 import FinishPanel from "./FinishPanel";
+import FabricPicker from "../project/FabricPicker";
 import { STAGES } from "../bits";
 import { toast } from "@/lib/toast";
 import { IconAlert, IconBookmark, IconBulb, IconCamera, IconCheck, IconChevronL, IconChevronR, IconList, IconRuler, IconSun, IconX, IconZoom } from "../icons";
@@ -54,6 +55,9 @@ export default function SewMode({ project: p, techniques, glossary }: { project:
   const current = prog?.current ?? 0;
   const level = useStore((s) => s.profile.level);
   const [showList, setShowList] = useState(false);
+  const [showFabric, setShowFabric] = useState(false);
+  const hasFabrics = p.materials.some((m) => m.kind === "fabric" || m.kind === "interfacing");
+  const fabricChosen = useStore((s) => s.prefs[p.id]?.fabrics) !== undefined;
   const [zoomed, setZoomed] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [finishing, setFinishing] = useState(false);
@@ -128,7 +132,7 @@ export default function SewMode({ project: p, techniques, glossary }: { project:
       if (e.key === "ArrowRight") goTo(idx + (rtl ? -1 : 1));
       else if (e.key === "ArrowLeft") goTo(idx + (rtl ? 1 : -1));
       else if (e.key.toLowerCase() === "c") toggleDone();
-      else if (e.key === "Escape") { setZoomed(false); setShowList(false); }
+      else if (e.key === "Escape") { setZoomed(false); setShowList(false); setShowFabric(false); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -174,6 +178,13 @@ export default function SewMode({ project: p, techniques, glossary }: { project:
               <button key={l} aria-pressed={level === l} onClick={() => setLevel(l)} className={`min-h-[32px] rounded-full px-3 capitalize ${level === l ? "bg-ink text-cream" : "text-ink-soft"}`}>{t(`sew.level.${l}`)}</button>
             ))}
           </div>
+          {hasFabrics && (
+            <button className={`btn-icon shrink-0 !w-auto gap-1.5 px-2.5 text-xs font-bold ${showFabric || fabricChosen ? "!bg-terra-soft" : ""}`} aria-expanded={showFabric} aria-controls="sew-fabric"
+              title={t("sew.fabric.title")} onClick={() => setShowFabric((v) => !v)}>
+              <span aria-hidden className="h-4 w-4 rounded-full border border-black/20" style={{ background: "repeating-linear-gradient(45deg,#C66B4E 0 3px,#f3e6da 3px 6px)" }} />
+              {t("sew.fabric.button")}
+            </button>
+          )}
           <button className="btn-icon shrink-0 !w-auto px-2.5 text-xs font-bold" aria-label={t("sew.textSizePct", { pct: Math.round(textScale * 100) })} title={t("sew.textSize")}
             onClick={() => update((s) => void (s.profile.textScale = s.profile.textScale >= 1.3 ? 1 : +(s.profile.textScale + 0.15).toFixed(2)))}>Aa</button>
           {awake !== "unsupported" && (
@@ -182,6 +193,15 @@ export default function SewMode({ project: p, techniques, glossary }: { project:
           )}
           <span className="hidden sm:block"><UnitToggle /></span>
         </div>
+        {showFabric && (
+          <div id="sew-fabric" role="region" aria-label={t("sew.fabric.title")} data-noswipe className="max-h-[60dvh] overflow-y-auto border-t border-line bg-paper px-3 py-3 md:px-5">
+            <div className="mb-3 flex items-center gap-2">
+              <p className="flex-1 text-sm font-semibold">{t("sew.fabric.title")} <span className="font-normal text-ink-soft">· {t("sew.fabric.sub")}</span></p>
+              <button className="btn-icon shrink-0" aria-label={t("sew.fabric.close")} onClick={() => setShowFabric(false)}><IconX size={16} /></button>
+            </div>
+            <FabricPicker p={p} ps={ps} compact />
+          </div>
+        )}
         <div className="flex gap-1 px-3 pb-2 md:px-5" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={t("sew.progressAria", { pct })}>
           {stageBars.map((b) => (
             <div key={b.st.id} className="min-w-0" style={{ flex: b.total }} title={`${t(stageMsg(b.st.id))}: ${b.done}/${b.total}`}>
@@ -224,7 +244,7 @@ export default function SewMode({ project: p, techniques, glossary }: { project:
         {/* Workspace */}
         <main ref={topRef} className="min-w-0 flex-1 pb-28" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
           <p className="sr-only" aria-live="polite">{t("sew.liveStep", { n: idx + 1, total: p.steps.length, title: step.title })}{isDone ? t("sew.liveCompleted") : ""}</p>
-          <div key={step.id} className="step-in mx-auto grid max-w-6xl gap-6 p-4 md:p-6 xl:grid-cols-[1.25fr_1fr]" style={{ ["--step-dir" as string]: dir > 0 ? "18px" : "-18px" }}>
+          <div key={step.id} className="step-in mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)] gap-6 p-4 md:p-6 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]" style={{ ["--step-dir" as string]: dir > 0 ? "18px" : "-18px" }}>
             {/* Visual */}
             <section aria-label={t("sew.illustration")} className="xl:sticky xl:top-[76px] xl:self-start">
               <div className="card relative overflow-hidden">
