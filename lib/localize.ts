@@ -39,7 +39,9 @@ function mapScene(els: SceneEl[], s: Record<string, string>): SceneEl[] {
 }
 
 function mapVisual(v: Visual, s: Record<string, string>): Visual {
-  return v.type === "scene" ? { type: "scene", scene: { els: mapScene(v.scene.els, s) } } : v;
+  if (v.type !== "scene") return v;
+  const scene = { els: mapScene(v.scene.els, s) };
+  return v.frames ? { type: "scene", scene, frames: v.frames.map((f) => ({ ...f, els: mapScene(f.els, s), caption: s[f.caption] ?? f.caption })) } : { type: "scene", scene };
 }
 
 /** Pure: returns the project with the overlay applied (or the same object when there is none). */

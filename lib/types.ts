@@ -107,8 +107,16 @@ export interface Scene {
   els: SceneEl[];
 }
 
+/** One beat of an animated demonstration: a full scene plus a short caption (drawn on the same 400×300 canvas). */
+export interface Frame {
+  els: SceneEl[];
+  caption: string;
+  /** How long this frame stays up when playing, ms (default 1600). */
+  ms?: number;
+}
+
 export type Visual =
-  | { type: "scene"; scene: Scene }
+  | { type: "scene"; scene: Scene; frames?: Frame[] }
   | { type: "layout"; materialId: string }
   | { type: "template"; name: string; args?: Record<string, unknown> }
   | { type: "gallery"; index?: number; label?: string }
@@ -138,6 +146,8 @@ export interface Step {
   warnings?: string[];
   timerMin?: number;
   visual: Visual;
+  /** Optional real demonstration video: an .mp4/.webm URL or a YouTube link. Shown next to the illustration. */
+  video?: { src: string; title?: string };
   alt: string;
 }
 
