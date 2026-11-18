@@ -84,3 +84,23 @@ If you're unsure about a term, add it here with a `?` instead of making one up.
 | gingham / plaid / chevron | גינגהאם / משבצות סקוטיות / שברון |
 | progress photos / journal | תמונות התקדמות / יומן |
 | instruction detail (level) | רמת פירוט ההוראות |
+
+## Terms added while translating the first 5 guides (please check)
+| English | עברית |
+|---|---|
+| point turner | כלי להוצאת פינות |
+| seam gauge | מד תפר |
+| bodkin / loop turner | כלי להשחלה / כלי להפיכת לולאות |
+| slip-stitch | תפר נסתר |
+| ladder stitch | תפר סולם |
+| bartack | נעילה (תפר חוזר צפוף) |
+| topstitching thread | חוט לתפר עילי |
+| fusible fleece | פליז מדבק |
+| duck canvas / poplin | קנבס דאק / פופלין |
+| free-arm | זרוע חופשית |
+| stitch length | אורך התפר |
+| handle drop | אורך ירידת הידית |
+| pivot with the needle down | סיבוב כשהמחט נעוצה בבד |
+| scrunchie | גומיית שיער מבד (סקראנצ׳י) |
+| upholstery cotton | כותנה לריפוד |
+| g/m² | גר׳/מ״ר |
