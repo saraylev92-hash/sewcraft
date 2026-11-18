@@ -144,7 +144,8 @@
       "alt": "A zipper with a folded fabric tab stitched over each end, the total length dimensioned."
     },
     {
-      "id": "p8", "stage": "sew", "title": "Sew the first side of the zipper",
+      "id": "p8",
+      "demo": {"name": "zip", "args": {"tone": "main", "lining": "lining"}}, "stage": "sew", "title": "Sew the first side of the zipper",
       "text": "Lay one outer panel right side up. Place the zipper face down on it, tape edge level with the top edge, centred. Lay a lining panel right side down on top, matching the top edge. Clip. With the zipper foot, sew through all layers 1 cm from the edge. When you near the pull, stop with the needle down, lift the foot, slide the pull behind the foot, and continue.",
       "beginner": "Three layers: outer (face up), zipper (face down), lining (face down). The zipper is sandwiched with its teeth facing the outer.",
       "expert": "Outer RS up / zip face down / lining RS down; sew 1 cm with zipper foot.",
@@ -216,7 +217,8 @@
       "alt": "Outer panels and lining panels each placed right sides together side by side, sewn around except a gap in the lining bottom."
     },
     {
-      "id": "p12", "stage": "assemble", "title": "Box all four corners",
+      "id": "p12",
+      "demo": {"name": "box", "args": {"tone": "main", "depth": "D"}}, "stage": "assemble", "title": "Box all four corners",
       "text": "Box each of the four corners (two outer, two lining): match the side seam to the bottom seam, flatten, and sew across with a 1 cm seam. Backstitch.",
       "expert": "Box 4 corners at 1 cm.",
       "pieces": ["outer", "lining"],
@@ -231,7 +233,8 @@
       "alt": "A corner pinched with seams aligned and stitched across to box it."
     },
     {
-      "id": "p13", "stage": "finish", "title": "Turn, close the gap and shape",
+      "id": "p13",
+      "demo": {"name": "turn", "args": {"tone": "main", "label": "turn right side out through the lining gap"}}, "stage": "finish", "title": "Turn, close the gap and shape",
       "text": "Turn the pouch right side out through the lining gap and through the open zipper. Push out the corners. Close the lining gap with edgestitching or a ladder stitch and push the lining inside.",
       "expert": "Turn, close gap, shape.",
       "pieces": ["lining"],

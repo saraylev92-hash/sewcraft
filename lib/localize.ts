@@ -4,6 +4,8 @@
 // English, so a partial translation is safe. Geometry, formulas and ids are never translated.
 // `strings` maps English text that appears inside illustrations (scene labels, template captions) to Hebrew.
 import type { Project, SceneEl, Step, Visual } from "./types";
+// Shared Hebrew for the fixed captions/labels of animated demos (lib/animations.ts); a guide's own `strings` win.
+import ANIM_HE from "../content/i18n/he/animation-strings.json";
 
 export interface ProjectTranslation {
   /** "draft" = machine/AI draft, not yet reviewed by a person (shown to the reader). */
@@ -48,7 +50,7 @@ function mapVisual(v: Visual, s: Record<string, string>): Visual {
 export function localizeProject(p: Project, lang: "en" | "he"): Project {
   const tr = lang === "he" ? p.i18n?.he : undefined;
   if (!tr) return p;
-  const s = tr.strings ?? {};
+  const s: Record<string, string> = { ...(ANIM_HE as Record<string, string>), ...(tr.strings ?? {}) };
   const steps: Step[] = p.steps.map((st) => {
     const o = tr.steps?.[st.id] ?? {};
     return {

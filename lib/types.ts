@@ -148,6 +148,8 @@ export interface Step {
   visual: Visual;
   /** Optional real demonstration video: an .mp4/.webm URL or a YouTube link. Shown next to the illustration. */
   video?: { src: string; title?: string };
+  /** Attach an animated demo (lib/animations.ts) to a step whose static picture is a hand-drawn scene. */
+  demo?: { name: string; args?: Record<string, unknown> };
   alt: string;
 }
 

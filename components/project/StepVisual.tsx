@@ -21,7 +21,7 @@ export default function StepVisual({ step, tones, vars, units, needs, contrast, 
   const v = step.visual;
   // Steps with an animated demo and/or a real video get a small switch: demo · illustration · video.
   const modes = [
-    ...(v.type === "scene" && v.frames && !compact ? (["demo"] as const) : []),
+    ...(v.type === "scene" && v.frames ? (["demo"] as const) : []),
     "still" as const,
     ...(step.video ? (["video"] as const) : []),
   ];

@@ -250,7 +250,8 @@
       "alt": "Two outer panels right sides together, stitched along both sides and the bottom, with the corner notches left unsewn."
     },
     {
-      "id": "t11", "stage": "sew", "title": "Box the outer corners",
+      "id": "t11",
+      "demo": {"name": "box", "args": {"tone": "main", "depth": "D"}}, "stage": "sew", "title": "Box the outer corners",
       "text": "At one corner, pull the front and back apart and flatten the opening so the side seam sits directly on top of the bottom seam, forming a straight edge. Nest the pressed-open seams, clip, and sew straight across with a 1 cm seam. Backstitch twice — this seam takes the weight of the bag. Repeat on the other corner.",
       "beginner": "Feel through the fabric with your fingers that the two seams line up exactly. If they don't, the base will twist.",
       "expert": "Box corners: match seams, sew across at 1 cm, double backstitch.",
@@ -267,7 +268,8 @@
       "alt": "A bag corner pinched into a triangle with the seams aligned and a straight seam sewn across, the length of which equals the base depth."
     },
     {
-      "id": "t12", "stage": "sew", "title": "Sew and box the lining",
+      "id": "t12",
+      "demo": {"name": "box", "args": {"tone": "lining", "depth": "D"}}, "stage": "sew", "title": "Sew and box the lining",
       "text": "Repeat steps 10 and 11 with the two lining pieces, right sides together — but leave the 12 cm turning gap in the bottom seam open, backstitching on both sides of it. Box both lining corners.",
       "beginner": "The gap must be in a straight part of the bottom seam, not near a corner. Backstitch firmly on each side because you'll pull the whole bag through it.",
       "expert": "Lining as outer, leaving 12 cm gap in base.",
@@ -324,7 +326,8 @@
       "alt": "The outer bag nested inside the inside-out lining, clipped around the top edge with a seam one centimetre down."
     },
     {
-      "id": "t15", "stage": "assemble", "title": "Turn the bag right side out",
+      "id": "t15",
+      "demo": {"name": "turn", "args": {"tone": "main", "label": "turn right side out through the lining gap"}}, "stage": "assemble", "title": "Turn the bag right side out",
       "text": "Reach into the turning gap in the lining and gently pull the outer bag through it. Then push the lining down inside the outer bag. Use a point turner to push out the boxed corners.",
       "beginner": "Go slowly — pull from the base of the bag, not the handles. It will look crumpled; pressing fixes that.",
       "expert": "Turn through the gap; push lining inside.",

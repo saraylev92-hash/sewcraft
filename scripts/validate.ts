@@ -32,7 +32,7 @@ for (const [dir, f] of files) {
 }
 const orphans = ["projects", "community"].flatMap((d) => {
   const t = path.join(root, "i18n", "he", d);
-  return fs.existsSync(t) ? fs.readdirSync(t).filter((f) => !fs.existsSync(path.join(root, d, f))).map((f) => `${d}/${f}`) : [];
+  return fs.existsSync(t) ? fs.readdirSync(t).filter((f) => f.endsWith(".json") && !fs.existsSync(path.join(root, d, f))).map((f) => `${d}/${f}`) : [];
 });
 for (const o of orphans) { errors++; console.log(`\n✗ [i18n] content/i18n/he/${o} has no matching guide`); }
 console.log(errors ? `\n${errors} error(s)` : `\nAll ${files.length} projects pass.`);

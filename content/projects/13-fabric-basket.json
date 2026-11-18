@@ -427,6 +427,7 @@
   },
   {
    "id": "fb10",
+   "demo": {"name": "box", "args": {"tone": "lining", "depth": "D"}},
    "stage": "sew",
    "title": "Sew and box the lining",
    "text": "Repeat with the lining, leaving a 10 cm gap in the bottom seam.",

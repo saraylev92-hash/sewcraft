@@ -51,6 +51,11 @@ export function normalizeProject(raw: any, catalog: ToolCatalog): { project: Pro
     } else if (visual.type === "photo") {
       alt ||= "Maker's photo of this step.";
     }
+    if (st.demo && visual.type === "scene" && !visual.frames) {
+      const frames = animationFor(st.demo.name, st.demo.args);
+      if (frames) visual = { ...visual, frames };
+      else issues.push(`Step ${i + 1}: unknown demo "${st.demo.name}"`);
+    }
     const firstSentence = String(st.text ?? "").split(/(?<=[.!?])\s/)[0];
     return { ...st, id: st.id ?? `s${i + 1}`, expert: st.expert ?? firstSentence, visual, alt };
   });
