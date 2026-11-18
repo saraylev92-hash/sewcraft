@@ -143,7 +143,7 @@ export default function PrintPattern({ project: p }: { project: Project }) {
                 <span><strong>{p.title}</strong> · {pc.name} · page {tileId} ({cols} × {rows})</span>
                 <span>{c > 0 ? `← join ${String.fromCharCode(64 + c)}${r + 1}` : ""} {r > 0 ? `↑ join ${String.fromCharCode(65 + c)}${r}` : ""}</span>
               </div>
-              <svg
+              <svg direction="ltr"
                 style={{ position: "absolute", left: `${MARGIN}mm`, top: `${MARGIN + HEADER}mm` }}
                 width={`${tileW}mm`} height={`${tileH}mm`} viewBox={`${c * tileW} ${r * tileH} ${tileW} ${tileH}`}
                 aria-label={`${pc.name} pattern tile ${tileId}`}

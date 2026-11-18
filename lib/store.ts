@@ -58,6 +58,8 @@ export interface State {
     onboarded: boolean;
     level: Level;
     units: Units;
+    /** UI language; guide content falls back to English where not yet translated. */
+    lang?: "en" | "he";
     equipment: string[];
     favCategories: string[];
     textScale: number;

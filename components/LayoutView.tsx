@@ -50,6 +50,7 @@ export default function LayoutView({ layout, units, swatch, selected, onSelect, 
   const svg = (
     <svg
       viewBox={`${-pad - 4} ${-pad - 2} ${vbW} ${vbH}`}
+      direction="ltr"
       role="img"
       aria-label={title}
       className="block h-auto"

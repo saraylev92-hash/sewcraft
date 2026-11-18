@@ -207,7 +207,7 @@ export default function SceneView({ scene, tones, vars, units, title, className,
 
   return (
     <figure className={className}>
-      <svg viewBox="0 0 400 300" role="img" aria-label={title} className="w-full h-auto block">
+      <svg viewBox="0 0 400 300" direction="ltr" role="img" aria-label={title} className="w-full h-auto block">
         <defs>
           <marker id={`ah-${uid}`} viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 z" fill={ACCENT} />
