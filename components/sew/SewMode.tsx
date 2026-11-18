@@ -127,6 +127,8 @@ export default function SewMode({ project: p, techniques, glossary }: { project:
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
+      // Inside the fabric panel only Escape is ours (closes it); arrows/C belong to the picker controls.
+      if (t.closest?.("#sew-fabric")) { if (e.key === "Escape") setShowFabric(false); return; }
       if (t.tagName === "TEXTAREA" || t.tagName === "INPUT" || t.tagName === "SELECT") return;
       if (t.closest?.("[role=dialog]")) return;
       if (e.key === "ArrowRight") goTo(idx + (rtl ? -1 : 1));
