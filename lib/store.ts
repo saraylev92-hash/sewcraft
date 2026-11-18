@@ -4,6 +4,7 @@
 import { useSyncExternalStore } from "react";
 import type { Level, Units } from "./types";
 import { toast } from "./toast";
+import { tr } from "./i18n";
 import type { FabricChoice } from "./fabrics";
 
 export interface Journal {
@@ -58,6 +59,8 @@ export interface State {
     onboarded: boolean;
     level: Level;
     units: Units;
+    /** UI language; guide content falls back to English where not yet translated. */
+    lang?: "en" | "he";
     equipment: string[];
     favCategories: string[];
     textScale: number;
@@ -189,9 +192,9 @@ export function toggleFavorite(id: string, title?: string) {
     added = !s.favorites.includes(id);
     s.favorites = added ? [id, ...s.favorites] : s.favorites.filter((x) => x !== id);
   });
-  toast(added ? `Saved${title ? ` “${title}”` : ""} to favourites` : "Removed from favourites", {
+  toast(added ? (title ? tr("studio.favSaved", { title }) : tr("studio.favSavedPlain")) : tr("studio.favRemoved"), {
     tone: added ? "success" : "default",
-    action: added ? undefined : { label: "Undo", run: () => update((s) => { if (!s.favorites.includes(id)) s.favorites.unshift(id); }) },
+    action: added ? undefined : { label: tr("studio.undo"), run: () => update((s) => { if (!s.favorites.includes(id)) s.favorites.unshift(id); }) },
   });
 }
 

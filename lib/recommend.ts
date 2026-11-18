@@ -1,5 +1,6 @@
 import type { ProjectCard } from "./cards";
 import type { State } from "./store";
+import { tr, type MessageKey } from "./i18n";
 
 const LEVEL_TO_DIFF: Record<string, string[]> = {
   beginner: ["beginner"],
@@ -17,18 +18,18 @@ export function recommend(cards: ProjectCard[], s: State): { card: ProjectCard; 
       let score = card.popularity / 50;
       const reasons: string[] = [];
       const fits = LEVEL_TO_DIFF[s.profile.level] ?? [];
-      if (fits[0] === card.difficulty) { score += 3; reasons.push(`Matches your ${s.profile.level} level`); }
+      if (fits[0] === card.difficulty) { score += 3; reasons.push(tr("discover.rec.level", { level: tr(`discover.level.${s.profile.level}` as MessageKey) })); }
       else if (fits.includes(card.difficulty)) score += 1.5;
-      if (card.difficulty === "intermediate" && doneDiffs.has("beginner")) { score += 1.5; reasons.push("A next step after your beginner makes"); }
+      if (card.difficulty === "intermediate" && doneDiffs.has("beginner")) { score += 1.5; reasons.push(tr("discover.rec.nextStep")); }
       const missing = card.tools.filter((t) => ["machine", "zip-foot"].includes(t) && !s.profile.equipment.includes(t));
-      if (missing.length) { score -= 4; reasons.push(`Needs ${missing.join(", ").replace("zip-foot", "a zipper foot").replace("machine", "a sewing machine")}`); }
-      else if (card.machineRequired) reasons.push("You have the tools");
-      if (s.profile.favCategories.includes(card.category) || card.tags.some((t) => s.profile.favCategories.includes(t))) { score += 2; reasons.push("In a category you love"); }
-      if (longestStash && card.fabricCm <= longestStash) { score += 1.5; reasons.push("Could use fabric from your stash"); }
-      if (s.profile.timeAvailable && card.minutes[1] <= s.profile.timeAvailable) { score += 1; reasons.push("Fits your available time"); }
+      if (missing.length) { score -= 4; reasons.push(tr("discover.rec.needs", { items: missing.map((m) => tr(m === "zip-foot" ? "discover.rec.needZipFoot" : "discover.rec.needMachine")).join(", ") })); }
+      else if (card.machineRequired) reasons.push(tr("discover.rec.haveTools"));
+      if (s.profile.favCategories.includes(card.category) || card.tags.some((t) => s.profile.favCategories.includes(t))) { score += 2; reasons.push(tr("discover.rec.category")); }
+      if (longestStash && card.fabricCm <= longestStash) { score += 1.5; reasons.push(tr("discover.rec.stash")); }
+      if (s.profile.timeAvailable && card.minutes[1] <= s.profile.timeAvailable) { score += 1; reasons.push(tr("discover.rec.time")); }
       if (completed.has(card.id)) score -= 6;
       if (s.progress[card.id] && !completed.has(card.id)) score -= 2; // already in progress → shown in Continue
-      if (s.favorites.includes(card.id)) { score += 1; reasons.push("Saved to favourites"); }
+      if (s.favorites.includes(card.id)) { score += 1; reasons.push(tr("discover.rec.fav")); }
       return { card, score, reasons: reasons.slice(0, 2) };
     })
     .sort((a, b) => b.score - a.score)

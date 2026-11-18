@@ -38,7 +38,7 @@ html {
 body {
   background: var(--cream);
   color: var(--ink);
-  font-family: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-body), var(--font-body-he), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -49,8 +49,12 @@ body.hc {
 }
 
 .font-display {
-  font-family: var(--font-display-face), Georgia, serif;
+  font-family: var(--font-display-face), var(--font-display-he), Georgia, serif;
   letter-spacing: -0.01em;
+}
+
+:lang(he) .font-display {
+  letter-spacing: 0;
 }
 
 :focus-visible {
@@ -149,3 +153,9 @@ input[type="checkbox"] { accent-color: var(--sage); }
 
 /* Programmatic focus target for screen readers in guided mode — no visible ring needed. */
 #step-title:focus, #step-title:focus-visible { outline: none; }
+
+/* Hebrew UI with guide content that is still English: let each text block take its own direction from its
+   first letter, so an English paragraph keeps its punctuation and alignment inside the RTL layout. */
+[dir="rtl"] :is(p, h1, h2, h3, h4, h5, h6, li, dt, dd, figcaption, td, th, blockquote, label) {
+  unicode-bidi: plaintext;
+}

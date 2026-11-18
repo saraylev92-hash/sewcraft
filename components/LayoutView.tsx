@@ -6,6 +6,7 @@ import type { Units } from "@/lib/types";
 import { darken, mix } from "@/lib/color";
 import type { Skin } from "@/lib/fabrics";
 import { lenNum, unitSuffix } from "@/lib/units";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   layout: LayoutResult;
@@ -32,6 +33,7 @@ function isUnfolded(pl: Placement) {
 }
 
 export default function LayoutView({ layout, units, swatch, selected, onSelect, showDims = true, showSA = true, compact, title, skin }: Props) {
+  const t = useT();
   const [zoom, setZoom] = useState(1);
   const uid = useId().replace(/:/g, "");
   const pad = 8;
@@ -50,6 +52,7 @@ export default function LayoutView({ layout, units, swatch, selected, onSelect, 
   const svg = (
     <svg
       viewBox={`${-pad - 4} ${-pad - 2} ${vbW} ${vbH}`}
+      direction="ltr"
       role="img"
       aria-label={title}
       className="block h-auto"
@@ -89,13 +92,13 @@ export default function LayoutView({ layout, units, swatch, selected, onSelect, 
       {layout.mode === "folded" ? (
         <>
           <line x1={0} y1={0} x2={0} y2={L} stroke="#4A5744" strokeWidth={0.6} strokeDasharray="3 1 0.6 1" />
-          <text transform={`translate(${-2.4},${L / 2}) rotate(-90)`} textAnchor="middle" fontSize={fs * 0.75} fill="#4A5744" fontWeight={700}>FOLD</text>
-          <text transform={`translate(${W + 7.5},${L / 2}) rotate(90)`} textAnchor="middle" fontSize={fs * 0.6} fill="#8b7f74" dy={-1}>selvedges</text>
+          <text transform={`translate(${-2.4},${L / 2}) rotate(-90)`} textAnchor="middle" fontSize={fs * 0.75} fill="#4A5744" fontWeight={700}>{t("project.layout.fold")}</text>
+          <text transform={`translate(${W + 7.5},${L / 2}) rotate(90)`} textAnchor="middle" fontSize={fs * 0.6} fill="#8b7f74" dy={-1}>{t("project.layout.selvedges")}</text>
         </>
       ) : (
         <>
-          <text transform={`translate(${-2.4},${L / 2}) rotate(-90)`} textAnchor="middle" fontSize={fs * 0.6} fill="#8b7f74">selvedge</text>
-          <text transform={`translate(${W + 7.5},${L / 2}) rotate(90)`} textAnchor="middle" fontSize={fs * 0.6} fill="#8b7f74" dy={-1}>selvedge</text>
+          <text transform={`translate(${-2.4},${L / 2}) rotate(-90)`} textAnchor="middle" fontSize={fs * 0.6} fill="#8b7f74">{t("project.layout.selvedge")}</text>
+          <text transform={`translate(${W + 7.5},${L / 2}) rotate(90)`} textAnchor="middle" fontSize={fs * 0.6} fill="#8b7f74" dy={-1}>{t("project.layout.selvedge")}</text>
         </>
       )}
       {/* pieces */}
@@ -109,14 +112,14 @@ export default function LayoutView({ layout, units, swatch, selected, onSelect, 
         const arrowLen = Math.min(grainVertical ? pl.h : pl.w, 30) * 0.55;
         const nameSize = Math.min(fs, pl.w / 7, pl.h / 4);
         const dimText = pl.onFold
-          ? `${lenNum(pl.w, units)} × ${lenNum(pl.h, units)} on fold`
+          ? `${lenNum(pl.w, units)} × ${lenNum(pl.h, units)} ${t("project.onFold")}`
           : `${lenNum(pl.rotated ? pl.fullWidth : pl.w, units)} × ${lenNum(pl.rotated ? pl.fullHeight : pl.h, units)}`;
         return (
           <g
             key={`${pl.pieceId}-${pl.copy}`}
             role="button"
             tabIndex={onSelect ? 0 : -1}
-            aria-label={`${pl.name}: ${dimText} ${unitSuffix(units)}, cuts ${pl.layers}`}
+            aria-label={t("project.layout.pieceAria", { name: pl.name, dims: dimText, unit: unitSuffix(units), n: pl.layers })}
             onClick={() => onSelect?.(isSel ? null : pl.pieceId)}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect?.(isSel ? null : pl.pieceId); } }}
             style={{ cursor: onSelect ? "pointer" : undefined, opacity: faded ? 0.28 : 1, transition: "opacity .2s" }}
@@ -162,7 +165,7 @@ export default function LayoutView({ layout, units, swatch, selected, onSelect, 
             <g transform={`translate(${pl.x + pl.w - 1}, ${pl.y + 1})`}>
               <rect x={-nameSize * 3.2} y={0} width={nameSize * 3.2} height={nameSize * 1.4} rx={nameSize * 0.4} fill={pl.layers === 2 ? "#2B2622" : "#C0583A"} />
               <text x={-nameSize * 1.6} y={nameSize * 1.02} textAnchor="middle" fontSize={nameSize * 0.8} fill="#fff" fontWeight={700}>
-                {pl.onFold ? "cut 1" : `cut ${pl.layers}`}
+                {t("project.cutN", { n: pl.onFold ? 1 : pl.layers })}
               </text>
             </g>
           </g>
@@ -177,12 +180,12 @@ export default function LayoutView({ layout, units, swatch, selected, onSelect, 
     <div className="rounded-2xl border border-line bg-[var(--canvas)]">
       <div className="flex items-center justify-between gap-2 border-b border-line px-3 py-2 text-sm">
         <span className="text-ink-soft">
-          {layout.mode === "folded" ? "Folded selvedge to selvedge" : "Single layer"} · {lenNum(layout.fabricWidth, units)} {unitSuffix(units)} wide
+          {layout.mode === "folded" ? t("project.layout.foldedMode") : t("project.layout.singleMode")} · {t("project.layout.wide", { w: `${lenNum(layout.fabricWidth, units)} ${unitSuffix(units)}` })}
         </span>
-        <div className="flex items-center gap-1" role="group" aria-label="Zoom">
-          <button className="btn-icon" onClick={() => setZoom((z) => Math.max(1, +(z - 0.5).toFixed(1)))} aria-label="Zoom out">−</button>
+        <div className="flex items-center gap-1" role="group" aria-label={t("project.layout.zoom")}>
+          <button className="btn-icon" onClick={() => setZoom((z) => Math.max(1, +(z - 0.5).toFixed(1)))} aria-label={t("project.zoomOut")}>−</button>
           <span className="w-12 text-center tabular-nums">{Math.round(zoom * 100)}%</span>
-          <button className="btn-icon" onClick={() => setZoom((z) => Math.min(4, z + 0.5))} aria-label="Zoom in">+</button>
+          <button className="btn-icon" onClick={() => setZoom((z) => Math.min(4, z + 0.5))} aria-label={t("project.zoomIn")}>+</button>
         </div>
       </div>
       <div className="max-h-[70vh] overflow-auto p-3">{svg}</div>
