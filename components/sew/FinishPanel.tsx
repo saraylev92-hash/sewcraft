@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useState } from "react";
 import type { Project } from "@/lib/types";
 import { useStore, withProgress } from "@/lib/store";
-import { toneMap } from "@/lib/color";
+import { useProject } from "@/lib/useProject";
 import SceneView from "../scene/SceneView";
 
 export default function FinishPanel({ p, onBack }: { p: Project; onBack: () => void }) {
+  const ps = useProject(p);
   const prog = useStore((s) => s.progress[p.id]);
   const units = useStore((s) => s.profile.units);
   const j = prog?.journal ?? {};
@@ -23,7 +24,7 @@ export default function FinishPanel({ p, onBack }: { p: Project; onBack: () => v
           <h1 className="mt-3 font-display text-4xl font-semibold">You made it!</h1>
           <p className="mt-2 text-ink-soft">{p.title} is complete{prog?.completedAt ? ` — ${new Date(prog.completedAt).toLocaleDateString()}` : ""}. Add it to your sewing journal.</p>
         </div>
-        <div className="card mx-auto mt-6 max-w-sm overflow-hidden"><SceneView scene={p.gallery[0].scene} tones={toneMap(p)} vars={{}} units={units} title={`Finished ${p.title}`} /></div>
+        <div className="card mx-auto mt-6 max-w-sm overflow-hidden"><SceneView scene={p.gallery[0].scene} tones={ps.tones} skins={ps.skins} vars={{}} units={units} title={`Finished ${p.title}`} /></div>
 
         <form className="card mt-6 space-y-4 p-5" onSubmit={(e) => { e.preventDefault(); setSaved(true); toast("Saved to your sewing journal", { tone: "success" }); }}>
           <fieldset>

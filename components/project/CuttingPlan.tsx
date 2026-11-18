@@ -92,7 +92,7 @@ export default function CuttingPlan({ p, ps }: { p: Project; ps: ReturnType<type
               </p>
             )}
             <div className="grid gap-4 lg:grid-cols-[1fr_260px]">
-              <LayoutView layout={need.layout} units={units} swatch={m.swatch} selected={sel} onSelect={setSel} showDims={showDims} showSA={showSA} title={`Cutting layout for ${m.name}`} />
+              <LayoutView layout={need.layout} units={units} swatch={m.swatch} selected={sel} onSelect={setSel} showDims={showDims} showSA={showSA} title={`Cutting layout for ${m.name}`} skin={ps.skins[m.id]} />
               <div className="space-y-3">
                 <div className="card p-4">
                   <p className="text-xs uppercase tracking-wide text-ink-soft">Buy</p>
@@ -138,7 +138,7 @@ export default function CuttingPlan({ p, ps }: { p: Project; ps: ReturnType<type
           {cutSteps.map((s) => (
             <figure key={s.id} className="card p-4">
               <figcaption className="mb-2 font-semibold">{s.title}</figcaption>
-              <StepVisual step={s} tones={ps.tones} vars={ps.vars} units={units} needs={ps.needs} compact />
+              <StepVisual step={s} tones={ps.tones} vars={ps.vars} units={units} needs={ps.needs} skins={ps.skins} compact />
               <p className="mt-2 text-sm text-ink-soft">{s.text}</p>
             </figure>
           ))}

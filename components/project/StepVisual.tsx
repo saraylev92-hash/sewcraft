@@ -4,18 +4,19 @@ import type { MaterialNeed } from "@/lib/needs";
 import type { Units } from "@/lib/types";
 import SceneView from "../scene/SceneView";
 import LayoutView from "../LayoutView";
+import type { Skin } from "@/lib/fabrics";
 
-export default function StepVisual({ step, tones, vars, units, needs, contrast, compact, legend }: {
-  step: Step; tones: Record<string, string>; vars: Record<string, number>; units: Units; needs: MaterialNeed[]; contrast?: boolean; compact?: boolean; legend?: boolean;
+export default function StepVisual({ step, tones, vars, units, needs, contrast, compact, legend, skins }: {
+  step: Step; tones: Record<string, string>; vars: Record<string, number>; units: Units; needs: MaterialNeed[]; contrast?: boolean; compact?: boolean; legend?: boolean; skins?: Record<string, Skin>;
 }) {
   const v = step.visual;
-  if (v.type === "scene") return <SceneView scene={v.scene} tones={tones} vars={vars} units={units} title={step.alt} contrast={contrast} legend={legend} />;
+  if (v.type === "scene") return <SceneView scene={v.scene} tones={tones} vars={vars} units={units} title={step.alt} contrast={contrast} legend={legend} skins={skins} />;
   if (v.type === "layout") {
     const n = needs.find((x) => x.material.id === v.materialId);
     if (!n) return <Missing />;
     return (
       <div>
-        <LayoutView layout={n.need.layout} units={units} swatch={n.material.swatch} compact={compact} title={step.alt} />
+        <LayoutView layout={n.need.layout} units={units} swatch={n.material.swatch} compact={compact} title={step.alt} skin={skins?.[n.material.id]} />
         {!compact && null}
       </div>
     );

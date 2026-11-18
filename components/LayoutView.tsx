@@ -1,9 +1,10 @@
 "use client";
 // Interactive cutting layout. All geometry comes from lib/layout.ts (pattern data → packer).
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { LayoutResult, Placement } from "@/lib/layout";
 import type { Units } from "@/lib/types";
 import { darken, mix } from "@/lib/color";
+import type { Skin } from "@/lib/fabrics";
 import { lenNum, unitSuffix } from "@/lib/units";
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
   showSA?: boolean;
   compact?: boolean; // no toolbar (used inside guided steps / thumbnails)
   title: string;
+  skin?: Skin;
 }
 
 /** Shaped pieces are drawn inside their bounding box; rotated ones are turned 90°. */
@@ -29,8 +31,9 @@ function isUnfolded(pl: Placement) {
   return !pl.onFold && pl.outline !== undefined && pl.isFoldPiece === true;
 }
 
-export default function LayoutView({ layout, units, swatch, selected, onSelect, showDims = true, showSA = true, compact, title }: Props) {
+export default function LayoutView({ layout, units, swatch, selected, onSelect, showDims = true, showSA = true, compact, title, skin }: Props) {
   const [zoom, setZoom] = useState(1);
+  const uid = useId().replace(/:/g, "");
   const pad = 8;
   const W = layout.usableWidth;
   const L = Math.max(layout.lengthUsed + 4, 20);
@@ -53,7 +56,12 @@ export default function LayoutView({ layout, units, swatch, selected, onSelect, 
       style={{ width: compact ? `min(100%, ${((55 * vbW) / vbH).toFixed(1)}vh)` :`min(${zoom * 100}%, ${((zoom * 62 * vbW) / vbH).toFixed(1)}vh)`, margin: "0 auto" }}
     >
       <defs>
-        <pattern id="fabric-weave" width="2" height="2" patternUnits="userSpaceOnUse">
+        {skin && (
+          <pattern id={`fs-${uid}`} width={skin.tileCm} height={skin.tileCm} patternUnits="userSpaceOnUse">
+            <image href={skin.href} width={skin.tileCm} height={skin.tileCm} preserveAspectRatio="xMidYMid slice" />
+          </pattern>
+        )}
+        <pattern id={`fw-${uid}`} width="2" height="2" patternUnits="userSpaceOnUse">
           <rect width="2" height="2" fill={mix(swatch, "#ffffff", 0.82)} />
           <rect width="1" height="1" fill={mix(swatch, "#ffffff", 0.74)} />
         </pattern>
@@ -62,7 +70,8 @@ export default function LayoutView({ layout, units, swatch, selected, onSelect, 
         </marker>
       </defs>
       {/* fabric */}
-      <rect x={0} y={0} width={W} height={L} fill="url(#fabric-weave)" stroke={darken(swatch, 0.3)} strokeWidth={0.3} />
+      <rect x={0} y={0} width={W} height={L} fill={`url(#fw-${uid})`} stroke={darken(swatch, 0.3)} strokeWidth={0.3} />
+      {skin && <rect x={0} y={0} width={W} height={L} fill={`url(#fs-${uid})`} opacity={0.45} />}
       {/* rulers */}
       {ticks.map((t) => (
         <g key={`h${t}`}>
@@ -116,16 +125,21 @@ export default function LayoutView({ layout, units, swatch, selected, onSelect, 
               <>
                 <rect x={pl.x} y={pl.y} width={pl.w} height={pl.h} fill="none" stroke={darken(pl.color, 0.4)} strokeWidth={0.2} strokeDasharray="0.8 0.8" opacity={0.6} />
                 <g transform={shapeTransform(pl)}>
-                  <path d={pl.outline} fill={mix(pl.color, "#ffffff", 0.35)} stroke={darken(pl.color, 0.4)} strokeWidth={isSel ? 0.9 : 0.45} vectorEffect="non-scaling-stroke" />
+                  <path d={pl.outline} fill={skin ? `url(#fs-${uid})` : mix(pl.color, "#ffffff", 0.35)} stroke={darken(pl.color, 0.4)} strokeWidth={isSel ? 0.9 : 0.45} vectorEffect="non-scaling-stroke" />
+                  {skin && <path d={pl.outline} fill="#ffffff" opacity={0.3} />}
                 </g>
                 {isUnfolded(pl) && (
                   <g transform={`translate(${pl.x + pl.w / 2},${pl.y}) scale(-1,1)`}>
-                    <path d={pl.outline} fill={mix(pl.color, "#ffffff", 0.35)} stroke={darken(pl.color, 0.4)} strokeWidth={isSel ? 0.9 : 0.45} vectorEffect="non-scaling-stroke" />
+                    <path d={pl.outline} fill={skin ? `url(#fs-${uid})` : mix(pl.color, "#ffffff", 0.35)} stroke={darken(pl.color, 0.4)} strokeWidth={isSel ? 0.9 : 0.45} vectorEffect="non-scaling-stroke" />
+                    {skin && <path d={pl.outline} fill="#ffffff" opacity={0.3} />}
                   </g>
                 )}
               </>
             ) : (
-              <rect x={pl.x} y={pl.y} width={pl.w} height={pl.h} fill={mix(pl.color, "#ffffff", 0.35)} stroke={darken(pl.color, 0.4)} strokeWidth={isSel ? 0.9 : 0.45} />
+              <>
+                <rect x={pl.x} y={pl.y} width={pl.w} height={pl.h} fill={skin ? `url(#fs-${uid})` : mix(pl.color, "#ffffff", 0.35)} stroke={darken(pl.color, 0.4)} strokeWidth={isSel ? 0.9 : 0.45} />
+                {skin && <rect x={pl.x} y={pl.y} width={pl.w} height={pl.h} fill="#ffffff" opacity={0.3} />}
+              </>
             )}
             {showSA && sa > 0 && !pl.outline && (
               <rect x={pl.x + saL} y={pl.y + sa} width={pl.w - saL - sa} height={pl.h - 2 * sa} fill="none" stroke={darken(pl.color, 0.55)} strokeWidth={0.22} strokeDasharray="1.2 0.8" />

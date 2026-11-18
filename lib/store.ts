@@ -4,6 +4,7 @@
 import { useSyncExternalStore } from "react";
 import type { Level, Units } from "./types";
 import { toast } from "./toast";
+import type { FabricChoice } from "./fabrics";
 
 export interface Journal {
   rating?: number; // difficulty 1–5
@@ -30,6 +31,8 @@ export interface ProjectPrefs {
   sizeId?: string;
   checklist: Record<string, "have" | "skip" | "need">;
   layout: Record<string, { width?: number; mode?: "folded" | "single"; directional?: boolean; shrink?: number }>;
+  /** Optional "preview with your fabric" look per material id. Absent = default flat colour. */
+  fabrics?: Record<string, FabricChoice>;
 }
 
 export interface StashFabric {
