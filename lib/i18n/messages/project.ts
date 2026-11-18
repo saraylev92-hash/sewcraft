@@ -266,6 +266,8 @@ const en = {
   "project.print.saDashed": "{sa} seam allowance (dashed)",
   "project.print.saNone": "no seam allowance",
   "project.print.check5": "5 cm check",
+  "project.tr.none": "This guide is not translated yet, so its instructions are in English.",
+  "project.tr.draft": "Draft translation: not yet checked by a person. If something is unclear, switch to English.",
 } as const;
 
 const he: { [K in keyof typeof en]: string } = {
@@ -524,6 +526,8 @@ const he: { [K in keyof typeof en]: string } = {
   "project.print.saDashed": "תוספת תפר {sa} (מקווקו)",
   "project.print.saNone": "ללא תוספת תפר",
   "project.print.check5": "בדיקת 5 ס״מ",
+  "project.tr.none": "ההדרכה הזו עדיין לא תורגמה, ולכן ההוראות באנגלית.",
+  "project.tr.draft": "תרגום טיוטה: עוד לא נבדק על ידי אדם. אם משהו לא ברור, עברו לאנגלית.",
 };
 
 const messages = { en, he };

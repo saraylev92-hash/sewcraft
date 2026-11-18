@@ -7,6 +7,7 @@ import { cache } from "react";
 import type { Category, GlossaryTerm, Project, Technique } from "./types";
 import { validateProject, type Issue } from "./validate";
 import { normalizeProject, type ToolCatalog } from "./normalize";
+import type { ProjectTranslation } from "./localize";
 
 const ROOT = path.join(process.cwd(), "content");
 
@@ -35,6 +36,8 @@ export const getAllProjects = cache((): { project: Project; issues: Issue[] }[] 
         const raw = readJson<Record<string, unknown>>(`${dir}/${f}`);
         if (dir === "community") raw.source = "community";
         const { project, issues: normIssues } = normalizeProject(raw, catalog);
+        const he = path.join(ROOT, "i18n", "he", dir, f);
+        if (fs.existsSync(he)) project.i18n = { he: JSON.parse(fs.readFileSync(he, "utf8")) as ProjectTranslation };
         const issues: Issue[] = [...normIssues.map((m) => ({ level: "error" as const, rule: "content", message: m })), ...validateProject(project, techniques)];
         return { project, issues };
       });

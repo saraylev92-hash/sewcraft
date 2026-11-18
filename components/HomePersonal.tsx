@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import type { ProjectCard as Card } from "@/lib/cards";
+import { cardText, type ProjectCard as Card } from "@/lib/cards";
 import { getState, useHydrated, useStore } from "@/lib/store";
 import { recommend } from "@/lib/recommend";
 import ProjectCard from "./ProjectCard";
@@ -11,10 +11,11 @@ import { toCard } from "@/lib/cards";
 import { guideToProject } from "@/lib/localGuides";
 import type { ToolCatalog } from "@/lib/normalize";
 import { sewHref } from "@/lib/paths";
-import { useT } from "@/lib/i18n";
+import { useLang, useT } from "@/lib/i18n";
 
 export default function HomePersonal({ cards: published, catalog }: { cards: Card[]; catalog: ToolCatalog }) {
   const t = useT();
+  const lang = useLang();
   const hydrated = useHydrated();
   const guides = useStore((s) => s.guides);
   const cards = useMemo(() => [...published, ...Object.values(guides).map((g) => toCard(guideToProject(g, catalog).project))], [published, guides, catalog]);
@@ -49,7 +50,7 @@ export default function HomePersonal({ cards: published, catalog }: { cards: Car
                 <div key={card.id} className="card flex items-center gap-4 p-4">
                   <div className="w-28 shrink-0"><ProjectCardMini card={card} /></div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-display text-lg font-semibold">{card.title}</h3>
+                    <h3 className="font-display text-lg font-semibold">{cardText(card, lang).title}</h3>
                     <p className="text-sm text-ink-soft">{t("discover.home.progress", { step: p.current + 1, n: card.steps, pct })}</p>
                     <div className="mt-2 h-2 overflow-hidden rounded-full bg-beige"><div className="h-full rounded-full bg-terra" style={{ width: `${pct}%` }} /></div>
                   </div>

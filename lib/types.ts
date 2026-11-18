@@ -174,6 +174,8 @@ export interface Project {
   /** Guide created in this browser with the guide builder (not in the content folder). */
   local?: boolean;
   featured?: boolean;
+  /** Content translations (overlay files in content/i18n/<lang>/), attached by the loader. */
+  i18n?: import("./localize").Translations;
   review: {
     status: "draft" | "review" | "published";
     technicallyValidated: boolean;

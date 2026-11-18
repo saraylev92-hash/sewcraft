@@ -9,6 +9,7 @@ import type { Project, Stage } from "@/lib/types";
 import type { ProjectCard as Card } from "@/lib/cards";
 import { markViewed, toggleFavorite, useHydrated, useStore } from "@/lib/store";
 import { useProject } from "@/lib/useProject";
+import { useLocalizedProject, useTranslationState } from "@/lib/useLocalized";
 import { fabricAmount } from "@/lib/units";
 import SceneView from "../scene/SceneView";
 import ProjectCard from "../ProjectCard";
@@ -23,10 +24,12 @@ import StepVisual, { stageMsg } from "./StepVisual";
 
 type Tab = "overview" | "materials" | "cutting" | "steps";
 
-export default function ProjectDetail({ project: p, techniques, related }: {
+export default function ProjectDetail({ project: raw, techniques, related }: {
   project: Project; techniques: { id: string; name: string; summary: string }[]; related: Card[];
 }) {
   const t = useT();
+  const p = useLocalizedProject(raw);
+  const trState = useTranslationState(raw);
   const ps = useProject(p);
   const hydrated = useHydrated();
   const fav = useStore((s) => s.favorites.includes(p.id));
@@ -141,6 +144,12 @@ export default function ProjectDetail({ project: p, techniques, related }: {
             <p className="mt-5 flex gap-2 rounded-xl border border-[#e8d4a8] bg-[#fbf3df] p-3 text-sm">
               <IconAlert className="mt-0.5 shrink-0 text-[#8a6a1f]" />
               <span><strong>{t("project.sample.strong")}</strong> {p.review.note} {t("project.sample.tail")}</span>
+            </p>
+          )}
+          {(trState === "none" || trState === "draft") && (
+            <p className="mt-3 flex gap-2 rounded-xl border border-line bg-paper p-3 text-sm text-ink-soft">
+              <IconAlert className="mt-0.5 shrink-0" />
+              <span>{t(trState === "none" ? "project.tr.none" : "project.tr.draft")}</span>
             </p>
           )}
 

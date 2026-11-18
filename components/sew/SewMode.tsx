@@ -8,6 +8,7 @@ import { evaluate } from "@/lib/formula";
 import { formatMeasure, lenNum, unitSuffix } from "@/lib/units";
 import { compressImage, update, useHydrated, useStore, withProgress } from "@/lib/store";
 import { useProject } from "@/lib/useProject";
+import { useLocalizedProject, useTranslationState } from "@/lib/useLocalized";
 import StepVisual, { stageMsg } from "../project/StepVisual";
 import { tr, useLang, useT } from "@/lib/i18n";
 import UnitToggle from "../UnitToggle";
@@ -43,10 +44,12 @@ function useWakeLock(enabled: boolean): "on" | "off" | "unsupported" {
   return state;
 }
 
-export default function SewMode({ project: p, techniques, glossary }: { project: Project; techniques: { id: string; name: string; summary: string }[]; glossary: GlossaryTerm[] }) {
+export default function SewMode({ project: raw, techniques, glossary }: { project: Project; techniques: { id: string; name: string; summary: string }[]; glossary: GlossaryTerm[] }) {
   const t = useT();
   const lang = useLang();
   const rtl = lang === "he";
+  const p = useLocalizedProject(raw);
+  const trState = useTranslationState(raw);
   const ps = useProject(p);
   const hydrated = useHydrated();
   const router = useRouter();
@@ -260,6 +263,7 @@ export default function SewMode({ project: p, techniques, glossary }: { project:
             <section aria-labelledby="step-title" className="space-y-5">
               <div>
                 <p className="flex items-center gap-2 text-sm font-semibold text-terra">{t("sew.stepOfTotal", { n: idx + 1, total: p.steps.length })}{isDone && <span className="chip !bg-sage !text-white !text-[11px]"><IconCheck size={12} />{t("sew.done")}</span>}</p>
+                {trState !== "en" && trState !== "reviewed" && idx === 0 && <p className="text-xs text-ink-soft">{t(trState === "none" ? "project.tr.none" : "project.tr.draft")}</p>}
                 <h1 id="step-title" ref={titleRef} tabIndex={-1} className="outline-none font-display text-2xl font-semibold leading-tight md:text-3xl">{step.title}</h1>
               </div>
 

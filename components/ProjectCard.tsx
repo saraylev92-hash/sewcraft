@@ -2,7 +2,8 @@
 import Link from "next/link";
 import type { ProjectCard as Card } from "@/lib/cards";
 import { toggleFavorite, useStore } from "@/lib/store";
-import { useT } from "@/lib/i18n";
+import { useLang, useT } from "@/lib/i18n";
+import { cardText } from "@/lib/cards";
 import { fabricAmount } from "@/lib/units";
 import SceneView from "./scene/SceneView";
 import { projectHref } from "@/lib/paths";
@@ -11,8 +12,10 @@ import { DifficultyBadge, formatMinutes } from "./bits";
 
 export type CardLike = Card;
 
-export default function ProjectCard({ card, size = "md", progress }: { card: CardLike; size?: "md" | "lg"; progress?: { pct: number; step: number } }) {
+export default function ProjectCard({ card: raw, size = "md", progress }: { card: CardLike; size?: "md" | "lg"; progress?: { pct: number; step: number } }) {
   const t = useT();
+  const lang = useLang();
+  const card = { ...raw, ...cardText(raw, lang) };
   const units = useStore((s) => s.profile.units);
   const fav = useStore((s) => s.favorites.includes(card.id));
   const prog = useStore((s) => s.progress[card.id]);
