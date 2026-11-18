@@ -271,7 +271,7 @@ export default function ProjectDetail({ project: raw, techniques, related }: {
                       const done = progress?.done.includes(s.id);
                       return (
                         <li key={s.id} className="card overflow-hidden">
-                          <div className="pointer-events-none bg-[var(--canvas)]"><StepVisual step={s} tones={ps.tones} skins={ps.skins} vars={ps.vars} units={ps.units} needs={ps.needs} compact /></div>
+                          <div className="pointer-events-none bg-[var(--canvas)]"><StepVisual step={s} tones={ps.tones} skins={ps.skins} vars={ps.vars} units={ps.units} needs={ps.needs} compact still /></div>
                           <div className="p-3">
                             <p className="text-xs font-semibold text-ink-soft">{t("project.stepN", { n: idx + 1 })}{done && <span className="ms-2 text-sage">{t("project.stepDone")}</span>}</p>
                             <p className="font-semibold">{s.title}</p>

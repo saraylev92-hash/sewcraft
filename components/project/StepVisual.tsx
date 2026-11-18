@@ -14,16 +14,18 @@ export function stageMsg(stage: string): MessageKey {
   return `project.stage.${stage === "prep" || stage === "cut" || stage === "sew" || stage === "assemble" || stage === "finish" ? stage : "sew"}` as MessageKey;
 }
 
-export default function StepVisual({ step, tones, vars, units, needs, contrast, compact, legend, skins }: {
+export default function StepVisual({ step, tones, vars, units, needs, contrast, compact, legend, skins, still: stillOnly }: {
+  /** Thumbnails: always the static illustration, no demo/video switch. */
+  still?: boolean;
   step: Step; tones: Record<string, string>; vars: Record<string, number>; units: Units; needs: MaterialNeed[]; contrast?: boolean; compact?: boolean; legend?: boolean; skins?: Record<string, Skin>;
 }) {
   const t = useT();
   const v = step.visual;
   // Steps with an animated demo and/or a real video get a small switch: demo · illustration · video.
   const modes = [
-    ...(v.type === "scene" && v.frames ? (["demo"] as const) : []),
+    ...(v.type === "scene" && v.frames && !stillOnly ? (["demo"] as const) : []),
     "still" as const,
-    ...(step.video ? (["video"] as const) : []),
+    ...(step.video && !stillOnly ? (["video"] as const) : []),
   ];
   const [mode, setMode] = useState<"demo" | "still" | "video">(modes[0]);
   const m = modes.includes(mode as never) ? mode : modes[0];

@@ -99,11 +99,11 @@ export const ANIMATIONS: Record<string, (a: Args) => Frame[]> = {
     return [
       { caption: "Start with the raw edge, wrong side up", els: [base, { k: "stitch", pts: [[60, 240], [340, 240]], color: "#b9ab98" }, lab("raw edge"), { k: "focus", x: 200, y: 240, r: 30 }] },
       { caption: "Fold the raw edge up and press", els: [
-        { ...base, h: 160 }, { k: "panel", x: 60, y: 210, w: 280, h: 30, tone: t, side: "wrong" },
+        { ...base, h: 160 }, { k: "panel", x: 60, y: 210, w: 280, h: 30, tone: t }, // folded onto the wrong side → its right side shows
         { k: "fold", from: [60, 210], to: [340, 210] }, { k: "iron", x: 200, y: 160 }, lab("first fold"),
       ] },
       { caption: "Fold up again to hide the raw edge", els: [
-        { ...base, h: 140 }, { k: "panel", x: 60, y: 190, w: 280, h: 50, tone: t },
+        { ...base, h: 140 }, { k: "panel", x: 60, y: 190, w: 280, h: 50, tone: t, side: "wrong" }, // folded again → wrong side shows
         { k: "fold", from: [60, 190], to: [340, 190] }, { k: "arrow", from: [370, 240], to: [370, 195], bend: -20 },
         { k: "dim", from: [354, 190], to: [354, 240], value: f2 }, lab("second fold"),
       ] },
