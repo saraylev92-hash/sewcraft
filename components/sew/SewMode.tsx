@@ -224,7 +224,7 @@ export default function SewMode({ project: p, techniques, glossary }: { project:
             {/* Visual */}
             <section aria-label="Illustration" className="xl:sticky xl:top-[76px] xl:self-start">
               <div className="card relative overflow-hidden">
-                <StepVisual step={step} tones={ps.tones} vars={ps.vars} units={ps.units} needs={ps.needs} contrast={ps.contrast} compact legend />
+                <StepVisual step={step} tones={ps.tones} vars={ps.vars} units={ps.units} needs={ps.needs} skins={ps.skins} contrast={ps.contrast} compact legend />
                 <button onClick={() => setZoomed(true)} className="btn-icon absolute right-3 top-3 !h-11 !w-11 shadow" aria-label="Zoom illustration"><IconZoom size={20} /></button>
               </div>
               {step.visual.type === "scene" && <p className="mt-2 px-1 text-xs text-ink-soft">{step.alt}</p>}
@@ -338,7 +338,7 @@ export default function SewMode({ project: p, techniques, glossary }: { project:
         <p className="hidden pb-2 text-center text-[11px] text-ink-soft md:block">Keys: ← → to move · C to mark complete · progress saves automatically</p>
       </nav>
 
-      {zoomed && <ZoomOverlay onClose={() => setZoomed(false)}><StepVisual step={step} tones={ps.tones} vars={ps.vars} units={ps.units} needs={ps.needs} contrast={ps.contrast} compact /></ZoomOverlay>}
+      {zoomed && <ZoomOverlay onClose={() => setZoomed(false)}><StepVisual step={step} tones={ps.tones} vars={ps.vars} units={ps.units} needs={ps.needs} skins={ps.skins} contrast={ps.contrast} compact /></ZoomOverlay>}
     </div>
   );
 }

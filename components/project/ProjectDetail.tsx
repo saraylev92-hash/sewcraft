@@ -14,6 +14,7 @@ import SceneView from "../scene/SceneView";
 import ProjectCard from "../ProjectCard";
 import { DifficultyBadge, STAGES, formatMinutes } from "../bits";
 import { IconAlert, IconClock, IconHeart, IconMachine, IconPrint, IconShare, IconDownload } from "../icons";
+import FabricPicker from "./FabricPicker";
 import Checklist, { readiness } from "./Checklist";
 import CuttingPlan from "./CuttingPlan";
 import Customizer from "./Customizer";
@@ -100,7 +101,7 @@ export default function ProjectDetail({ project: p, techniques, related }: {
             {p.cover && view === -1 ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={p.cover} alt={`${p.title} — maker's photo`} className="aspect-[4/3] w-full object-cover" />
-            ) : p.gallery[Math.max(0, view)] ? <SceneView scene={p.gallery[Math.max(0, view)].scene} tones={ps.tones} vars={ps.vars} units={ps.units} title={`${p.title} — ${p.gallery[Math.max(0, view)].label} view (illustration)`} className="bg-[var(--canvas)]" /> : null}
+            ) : p.gallery[Math.max(0, view)] ? <SceneView scene={p.gallery[Math.max(0, view)].scene} tones={ps.tones} skins={ps.skins} vars={ps.vars} units={ps.units} title={`${p.title} — ${p.gallery[Math.max(0, view)].label} view (illustration)`} className="bg-[var(--canvas)]" /> : null}
           </div>
           <div className="mt-3 flex items-center gap-2">
             {p.cover && (
@@ -109,7 +110,7 @@ export default function ProjectDetail({ project: p, techniques, related }: {
             )}
             {p.gallery.map((g, i) => (
               <button key={g.label} onClick={() => setView(i)} aria-pressed={view === i} className={`w-20 overflow-hidden rounded-xl border-2 ${view === i ? "border-terra" : "border-transparent"}`} aria-label={`${g.label} view`}>
-                <SceneView scene={g.scene} tones={ps.tones} vars={ps.vars} units={ps.units} title="" />
+                <SceneView scene={g.scene} tones={ps.tones} skins={ps.skins} vars={ps.vars} units={ps.units} title="" />
               </button>
             ))}
             <p className="ml-auto max-w-[14rem] text-right text-[11px] leading-tight text-ink-soft">{p.cover ? "Photo by the maker; illustrations drawn from pattern data." : "Illustrations drawn from pattern data. Product photos not yet available."}</p>
@@ -243,7 +244,7 @@ export default function ProjectDetail({ project: p, techniques, related }: {
             <Customizer p={p} ps={ps} />
           </div>
         )}
-        {tab === "materials" && <Checklist p={p} ps={ps} />}
+        {tab === "materials" && <div className="space-y-6"><FabricPicker p={p} ps={ps} /><Checklist p={p} ps={ps} /></div>}
         {tab === "cutting" && <CuttingPlan p={p} ps={ps} />}
         {tab === "steps" && (
           <div className="space-y-8">
@@ -259,7 +260,7 @@ export default function ProjectDetail({ project: p, techniques, related }: {
                       const done = progress?.done.includes(s.id);
                       return (
                         <li key={s.id} className="card overflow-hidden">
-                          <div className="pointer-events-none bg-[var(--canvas)]"><StepVisual step={s} tones={ps.tones} vars={ps.vars} units={ps.units} needs={ps.needs} compact /></div>
+                          <div className="pointer-events-none bg-[var(--canvas)]"><StepVisual step={s} tones={ps.tones} skins={ps.skins} vars={ps.vars} units={ps.units} needs={ps.needs} compact /></div>
                           <div className="p-3">
                             <p className="text-xs font-semibold text-ink-soft">Step {idx + 1}{done && <span className="ml-2 text-sage">✓ done</span>}</p>
                             <p className="font-semibold">{s.title}</p>

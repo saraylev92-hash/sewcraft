@@ -5,6 +5,7 @@ import { EMPTY_PREFS, useStore, withPrefs } from "./store";
 import { resolvePieces, sanitizeParams, vars as mkVars } from "./resolve";
 import { materialNeeds } from "./needs";
 import { toneMap } from "./color";
+import { resolveSkins } from "./fabrics";
 
 /** Everything a project screen needs, derived from definition + this user's choices. */
 export function useProject(p: Project) {
@@ -17,11 +18,17 @@ export function useProject(p: Project) {
   const v = useMemo(() => mkVars(p, params), [p, params]);
   const pieces = useMemo(() => resolvePieces(p, params), [p, params]);
   const needs = useMemo(() => materialNeeds(p, params, prefs.layout), [p, params, prefs.layout]);
-  const tones = useMemo(() => toneMap(p), [p]);
+  const stash = useStore((s) => s.stash);
+  const skins = useMemo(() => resolveSkins(p, prefs.fabrics, stash), [p, prefs.fabrics, stash]);
+  const tones = useMemo(() => {
+    const t = toneMap(p);
+    for (const k of Object.keys(skins)) t[k] = skins[k].avg;
+    return t;
+  }, [p, skins]);
   const custom = p.params.some((x) => params[x.id] !== x.default);
 
   return {
-    prefs, units, level, contrast, params, vars: v, pieces, needs, tones, custom,
+    prefs, units, level, contrast, params, vars: v, pieces, needs, tones, skins, custom,
     setParam: (id: string, value: number) => withPrefs(p.id, (x) => { x.params = { ...sanitizeParams(p, x.params), [id]: value }; x.sizeId = undefined; }),
     setSize: (sizeId: string) => withPrefs(p.id, (x) => { const s = p.sizes.find((z) => z.id === sizeId); if (s) { x.params = { ...s.values }; x.sizeId = sizeId; } }),
     resetSize: () => withPrefs(p.id, (x) => { x.params = undefined; x.sizeId = undefined; }),

@@ -4,6 +4,7 @@ import { useId } from "react";
 import { evaluate } from "@/lib/formula";
 import { darken, mix, resolveTone } from "@/lib/color";
 import { len } from "@/lib/units";
+import type { Skin } from "@/lib/fabrics";
 import type { Pt, Scene, SceneEl, Units } from "@/lib/types";
 
 interface Props {
@@ -15,13 +16,14 @@ interface Props {
   className?: string;
   contrast?: boolean;
   legend?: boolean;
+  skins?: Record<string, Skin>;
 }
 
 const INK = "#2B2622";
 const THREAD = "#2F2A26";
 const ACCENT = "#C0583A";
 
-export default function SceneView({ scene, tones, vars, units, title, className, contrast, legend }: Props) {
+export default function SceneView({ scene, tones, vars, units, title, className, contrast, legend, skins }: Props) {
   const uid = useId().replace(/:/g, "");
   const sw = contrast ? 1.6 : 1;
   const usedTones = new Set<string>();
@@ -220,6 +222,24 @@ export default function SceneView({ scene, tones, vars, units, title, className,
           {Array.from(new Set(scene.els.flatMap((e) => (e.k === "panel" || e.k === "poly" || e.k === "path" ? [e.tone] : [])))).map((tone) => {
             const c = resolveTone(tone, tones);
             const id = tone.replace("#", "");
+            const skin = skins?.[tone];
+            if (skin) {
+              const T = Math.round(skin.tileCm * 5); // 12 cm ≈ 60 scene units
+              return (
+                <g key={tone}>
+                  <pattern id={`r-${uid}-${id}`} width={T} height={T} patternUnits="userSpaceOnUse">
+                    <image href={skin.href} width={T} height={T} preserveAspectRatio="xMidYMid slice" />
+                  </pattern>
+                  <pattern id={`w-${uid}-${id}`} width={T} height={T} patternUnits="userSpaceOnUse">
+                    <image href={skin.href} width={T} height={T} preserveAspectRatio="xMidYMid slice" />
+                    <rect width={T} height={T} fill="#ffffff" opacity="0.6" />
+                    <line x1="0" y1="0" x2={T} y2={T} stroke={mix(skin.avg, "#ffffff", 0.2)} strokeWidth="1" />
+                    <line x1={T / 2} y1="0" x2={T * 1.5} y2={T} stroke={mix(skin.avg, "#ffffff", 0.2)} strokeWidth="1" />
+                    <line x1={-T / 2} y1="0" x2={T / 2} y2={T} stroke={mix(skin.avg, "#ffffff", 0.2)} strokeWidth="1" />
+                  </pattern>
+                </g>
+              );
+            }
             return (
               <g key={tone}>
                 <pattern id={`r-${uid}-${id}`} width="10" height="10" patternUnits="userSpaceOnUse">
