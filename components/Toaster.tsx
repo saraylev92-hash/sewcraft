@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import { onToast, type Toast } from "@/lib/toast";
 import { IconCheck, IconX } from "./icons";
+import { useT } from "@/lib/i18n";
 
 export default function Toaster({ raised = false }: { raised?: boolean }) {
+  const tr = useT();
   const [items, setItems] = useState<Toast[]>([]);
   useEffect(() => onToast((t) => {
     setItems((x) => [...x.slice(-2), t]);
@@ -18,7 +20,7 @@ export default function Toaster({ raised = false }: { raised?: boolean }) {
           {t.tone === "celebrate" && <span aria-hidden>✦</span>}
           <span className="flex-1">{t.message}</span>
           {t.action && <button className="font-semibold underline underline-offset-4" onClick={() => { t.action!.run(); dismiss(t.id); }}>{t.action.label}</button>}
-          <button onClick={() => dismiss(t.id)} aria-label="Dismiss" className="opacity-70 hover:opacity-100"><IconX size={14} /></button>
+          <button onClick={() => dismiss(t.id)} aria-label={tr("discover.toast.dismiss")} className="opacity-70 hover:opacity-100"><IconX size={14} /></button>
         </div>
       ))}
     </div>

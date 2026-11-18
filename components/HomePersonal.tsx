@@ -11,8 +11,10 @@ import { toCard } from "@/lib/cards";
 import { guideToProject } from "@/lib/localGuides";
 import type { ToolCatalog } from "@/lib/normalize";
 import { sewHref } from "@/lib/paths";
+import { useT } from "@/lib/i18n";
 
 export default function HomePersonal({ cards: published, catalog }: { cards: Card[]; catalog: ToolCatalog }) {
+  const t = useT();
   const hydrated = useHydrated();
   const guides = useStore((s) => s.guides);
   const cards = useMemo(() => [...published, ...Object.values(guides).map((g) => toCard(guideToProject(g, catalog).project))], [published, guides, catalog]);
@@ -39,7 +41,7 @@ export default function HomePersonal({ cards: published, catalog }: { cards: Car
     <>
       {inProgress.length > 0 && (
         <section>
-          <SectionHeading title="Continue sewing" sub="Pick up exactly where you left off." />
+          <SectionHeading title={t("discover.home.continue")} sub={t("discover.home.continueSub")} />
           <div className="grid gap-4 md:grid-cols-2">
             {inProgress.map(({ card, p }) => {
               const pct = Math.round((p.done.length / card.steps) * 100);
@@ -48,10 +50,10 @@ export default function HomePersonal({ cards: published, catalog }: { cards: Car
                   <div className="w-28 shrink-0"><ProjectCardMini card={card} /></div>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-display text-lg font-semibold">{card.title}</h3>
-                    <p className="text-sm text-ink-soft">Step {p.current + 1} of {card.steps} · {pct}% complete</p>
+                    <p className="text-sm text-ink-soft">{t("discover.home.progress", { step: p.current + 1, n: card.steps, pct })}</p>
                     <div className="mt-2 h-2 overflow-hidden rounded-full bg-beige"><div className="h-full rounded-full bg-terra" style={{ width: `${pct}%` }} /></div>
                   </div>
-                  <Link href={sewHref(card)} className="btn btn-primary">Resume</Link>
+                  <Link href={sewHref(card)} className="btn btn-primary">{t("discover.home.resume")}</Link>
                 </div>
               );
             })}
@@ -59,7 +61,7 @@ export default function HomePersonal({ cards: published, catalog }: { cards: Car
         </section>
       )}
       <section>
-        <SectionHeading title="Recommended for you" sub="Based on your skill level, tools, favourites and fabric stash." action={<Link href="/studio?tab=setup" className="text-sm font-semibold text-terra">Adjust</Link>} />
+        <SectionHeading title={t("discover.home.recommended")} sub={t("discover.home.recommendedSub")} action={<Link href="/studio?tab=setup" className="text-sm font-semibold text-terra">{t("discover.home.adjust")}</Link>} />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {recs.map(({ card, reasons }) => (
             <div key={card.id} className="flex flex-col gap-2">

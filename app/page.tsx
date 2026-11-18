@@ -4,6 +4,7 @@ import ProjectCard from "@/components/ProjectCard";
 import HeroSearch from "@/components/HeroSearch";
 import HomePersonal from "@/components/HomePersonal";
 import { SectionHeading } from "@/components/bits";
+import T from "@/lib/i18n/T";
 
 export default function Home() {
   const cards = getCards();
@@ -21,13 +22,13 @@ export default function Home() {
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 pb-12 pt-10 md:grid-cols-[1.1fr_1fr] md:px-8 md:pb-20 md:pt-16">
           <div>
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-terra">Discover · Prepare · Measure · Cut · Sew · Finish</p>
-            <h1 className="font-display text-4xl font-semibold leading-[1.05] md:text-6xl">Your next creation starts here.</h1>
-            <p className="mt-4 max-w-lg text-lg text-ink-soft">Guided sewing projects with exact cutting plans, step-by-step illustrations and progress that waits for you.</p>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-terra"><T k="discover.home.stages" /></p>
+            <h1 className="font-display text-4xl font-semibold leading-[1.05] md:text-6xl"><T k="discover.home.title" /></h1>
+            <p className="mt-4 max-w-lg text-lg text-ink-soft"><T k="discover.home.lead" /></p>
             <HeroSearch />
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/explore" className="btn btn-primary">Explore Projects</Link>
-              <Link href="/projects/classic-tote" className="btn btn-secondary">Try the Classic Tote</Link>
+              <Link href="/explore" className="btn btn-primary"><T k="discover.home.explore" /></Link>
+              <Link href="/projects/classic-tote" className="btn btn-secondary"><T k="discover.home.tryTote" /></Link>
             </div>
           </div>
           <HeroArt />
@@ -38,8 +39,8 @@ export default function Home() {
         <HomePersonal cards={cards} catalog={getToolCatalog()} />
 
         <section aria-labelledby="cat-h">
-          <SectionHeading title="Explore by category" />
-          <h2 id="cat-h" className="sr-only">Categories</h2>
+          <SectionHeading title={<T k="discover.home.byCategory" />} />
+          <h2 id="cat-h" className="sr-only"><T k="discover.home.categories" /></h2>
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {categories.map((c) => (
               <li key={c.id}>
@@ -47,7 +48,7 @@ export default function Home() {
                   <span className="mb-2 h-10 w-10 rounded-full" style={{ background: `radial-gradient(circle at 30% 30%, #fff8 0 18%, transparent 19%), ${c.tone}` }} aria-hidden />
                   <span className="font-semibold">{c.name}</span>
                   <span className="text-xs text-ink-soft">{c.blurb}</span>
-                  <span className="mt-auto pt-2 text-xs font-semibold text-terra">{counts(c.id) ? `${counts(c.id)} project${counts(c.id) > 1 ? "s" : ""}` : "Coming soon"}</span>
+                  <span className="mt-auto pt-2 text-xs font-semibold text-terra">{counts(c.id) ? <T k={counts(c.id) > 1 ? "discover.count.projectsMany" : "discover.count.projectsOne"} vars={{ n: counts(c.id) }} /> : <T k="discover.home.comingSoon" />}</span>
                 </Link>
               </li>
             ))}
@@ -55,29 +56,29 @@ export default function Home() {
         </section>
 
         <section>
-          <SectionHeading title="Featured projects" sub="Hand-picked makes with full cutting plans and guided steps." />
+          <SectionHeading title={<T k="discover.home.featured" />} sub={<T k="discover.home.featuredSub" />} />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((c) => <ProjectCard key={c.id} card={c} size="lg" />)}
           </div>
         </section>
 
         <section>
-          <SectionHeading title="Popular this week" action={<Link href="/explore?sort=popular" className="text-sm font-semibold text-terra">See all</Link>} />
+          <SectionHeading title={<T k="discover.home.popular" />} action={<Link href="/explore?sort=popular" className="text-sm font-semibold text-terra"><T k="discover.home.seeAll" /></Link>} />
           <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2 scrollbar-none md:mx-0 md:grid md:grid-cols-4 md:px-0">
             {popular.map((c) => <div key={c.id} className="w-64 shrink-0 snap-start md:w-auto"><ProjectCard card={c} /></div>)}
           </div>
         </section>
 
         <section className="rounded-[1.75rem] bg-sage-soft p-5 md:p-8">
-          <SectionHeading title="From the community" sub="Guides shared by fellow makers — checked by our content rules, not editor-reviewed." action={<Link href="/community/new" className="btn btn-sage">Share a guide</Link>} />
+          <SectionHeading title={<T k="discover.home.community" />} sub={<T k="discover.home.communitySub" />} action={<Link href="/community/new" className="btn btn-sage"><T k="discover.home.shareGuide" /></Link>} />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {community.slice(0, 3).map((c) => <ProjectCard key={c.id} card={c} />)}
           </div>
-          <Link href="/community" className="mt-4 inline-block text-sm font-semibold text-[#4c6142]">Browse all community guides →</Link>
+          <Link href="/community" className="mt-4 inline-block text-sm font-semibold text-[#4c6142]"><T k="discover.home.browseCommunity" /></Link>
         </section>
 
         <section>
-          <SectionHeading title="Quick & easy" sub="Finished in about two hours or less." />
+          <SectionHeading title={<T k="discover.home.quick" />} sub={<T k="discover.home.quickSub" />} />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {quick.slice(0, 8).map((c) => <ProjectCard key={c.id} card={c} />)}
           </div>

@@ -1,6 +1,8 @@
+"use client";
 // Deterministic renderer for instruction scenes. Every dimension label is computed from the
 // project's formulas (so it follows custom sizes) — nothing is baked into an image.
 import { useId } from "react";
+import { useT } from "@/lib/i18n";
 import { evaluate } from "@/lib/formula";
 import { darken, mix, resolveTone } from "@/lib/color";
 import { len } from "@/lib/units";
@@ -24,6 +26,7 @@ const THREAD = "#2F2A26";
 const ACCENT = "#C0583A";
 
 export default function SceneView({ scene, tones, vars, units, title, className, contrast, legend, skins }: Props) {
+  const t = useT();
   const uid = useId().replace(/:/g, "");
   const sw = contrast ? 1.6 : 1;
   const usedTones = new Set<string>();
@@ -260,13 +263,13 @@ export default function SceneView({ scene, tones, vars, units, title, className,
       </svg>
       {legend && (
         <figcaption className="mt-2 px-3 pb-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-soft">
-          {[...usedTones].filter((t) => !t.startsWith("#")).slice(0, 4).map((t) => (
-            <span key={t} className="inline-flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm border border-black/20" style={{ background: resolveTone(t, tones) }} />right side</span>
+          {[...usedTones].filter((tn) => !tn.startsWith("#")).slice(0, 4).map((tn) => (
+            <span key={tn} className="inline-flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm border border-black/20" style={{ background: resolveTone(tn, tones) }} />{t("project.legend.rightSide")}</span>
           )).slice(0, 1)}
-          {hasWrong && <span className="inline-flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm border border-black/20 hatch" />wrong side (hatched)</span>}
-          {scene.els.some((e) => e.k === "stitch") && <span className="inline-flex items-center gap-1.5"><svg width="18" height="6"><line x1="0" y1="3" x2="18" y2="3" stroke={THREAD} strokeWidth="2" strokeDasharray="4 3" /></svg>stitch line</span>}
-          {scene.els.some((e) => e.k === "fold") && <span className="inline-flex items-center gap-1.5"><svg width="18" height="6"><line x1="0" y1="3" x2="18" y2="3" stroke="#5E6B57" strokeWidth="2" strokeDasharray="6 2 1 2" /></svg>fold</span>}
-          {scene.els.some((e) => e.k === "cutout") && <span className="inline-flex items-center gap-1.5"><span className="h-3 w-3 border border-dashed" style={{ borderColor: ACCENT }} />cut away</span>}
+          {hasWrong && <span className="inline-flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm border border-black/20 hatch" />{t("project.legend.wrongSide")}</span>}
+          {scene.els.some((e) => e.k === "stitch") && <span className="inline-flex items-center gap-1.5"><svg width="18" height="6"><line x1="0" y1="3" x2="18" y2="3" stroke={THREAD} strokeWidth="2" strokeDasharray="4 3" /></svg>{t("project.legend.stitchLine")}</span>}
+          {scene.els.some((e) => e.k === "fold") && <span className="inline-flex items-center gap-1.5"><svg width="18" height="6"><line x1="0" y1="3" x2="18" y2="3" stroke="#5E6B57" strokeWidth="2" strokeDasharray="6 2 1 2" /></svg>{t("project.legend.fold")}</span>}
+          {scene.els.some((e) => e.k === "cutout") && <span className="inline-flex items-center gap-1.5"><span className="h-3 w-3 border border-dashed" style={{ borderColor: ACCENT }} />{t("project.legend.cutAway")}</span>}
         </figcaption>
       )}
     </figure>
