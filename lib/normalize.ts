@@ -2,6 +2,7 @@
 // Project: resolves catalog tools ("iron", "seam-ripper?"), the "thread" material shorthand, defaults,
 // and expands illustration templates into scenes. Client-safe — used by the server loader and the builder.
 import { expandTemplate, templateAlt } from "./templates";
+import { animationFor } from "./animations";
 import type { Material, Project, Step, Tool, Visual } from "./types";
 
 export type ToolCatalog = Record<string, { name: string; why: string; substitutes?: string[] }>;
@@ -33,7 +34,8 @@ export function normalizeProject(raw: any, catalog: ToolCatalog): { project: Pro
       try {
         const els = expandTemplate(visual.name, visual.args);
         alt ||= templateAlt(visual.name, visual.args);
-        visual = { type: "scene", scene: { els } };
+        const frames = animationFor(visual.name, visual.args);
+        visual = frames ? { type: "scene", scene: { els }, frames } : { type: "scene", scene: { els } };
       } catch (e) {
         issues.push(`Step ${i + 1}: ${(e as Error).message}`);
         visual = { type: "missing" };
@@ -48,6 +50,11 @@ export function normalizeProject(raw: any, catalog: ToolCatalog): { project: Pro
       visual = { type: "missing" };
     } else if (visual.type === "photo") {
       alt ||= "Maker's photo of this step.";
+    }
+    if (st.demo && visual.type === "scene" && !visual.frames) {
+      const frames = animationFor(st.demo.name, st.demo.args);
+      if (frames) visual = { ...visual, frames };
+      else issues.push(`Step ${i + 1}: unknown demo "${st.demo.name}"`);
     }
     const firstSentence = String(st.text ?? "").split(/(?<=[.!?])\s/)[0];
     return { ...st, id: st.id ?? `s${i + 1}`, expert: st.expert ?? firstSentence, visual, alt };

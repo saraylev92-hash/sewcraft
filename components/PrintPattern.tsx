@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Project } from "@/lib/types";
 import { useProject } from "@/lib/useProject";
+import { useLocalizedProject } from "@/lib/useLocalized";
 import { interpolate } from "@/lib/formula";
 import { dims, fabricAmount, len } from "@/lib/units";
 import { useLang, useT, type MessageKey } from "@/lib/i18n";
@@ -20,7 +21,8 @@ const HEADER = 12; // mm reserved for page label
 
 type Paper = keyof typeof PAPER;
 
-export default function PrintPattern({ project: p }: { project: Project }) {
+export default function PrintPattern({ project: raw }: { project: Project }) {
+  const p = useLocalizedProject(raw);
   const t = useT();
   const lang = useLang();
   const ps = useProject(p);

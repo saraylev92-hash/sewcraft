@@ -266,6 +266,18 @@ const en = {
   "project.print.saDashed": "{sa} seam allowance (dashed)",
   "project.print.saNone": "no seam allowance",
   "project.print.check5": "5 cm check",
+  "project.tr.none": "This guide is not translated yet, so its instructions are in English.",
+  "project.tr.draft": "Draft translation: not yet checked by a person. If something is unclear, switch to English.",
+  "project.demo.view": "How to view this step",
+  "project.demo.tabDemo": "▶ Demo",
+  "project.demo.tabStill": "Illustration",
+  "project.demo.tabVideo": "Video",
+  "project.demo.play": "Play demo",
+  "project.demo.pause": "Pause demo",
+  "project.demo.next": "Next frame",
+  "project.demo.steps": "Demo frames",
+  "project.demo.frame": "{n}/{total}",
+  "project.demo.goto": "Frame {n}: {caption}",
 } as const;
 
 const he: { [K in keyof typeof en]: string } = {
@@ -524,6 +536,18 @@ const he: { [K in keyof typeof en]: string } = {
   "project.print.saDashed": "תוספת תפר {sa} (מקווקו)",
   "project.print.saNone": "ללא תוספת תפר",
   "project.print.check5": "בדיקת 5 ס״מ",
+  "project.tr.none": "ההדרכה הזו עדיין לא תורגמה, ולכן ההוראות באנגלית.",
+  "project.tr.draft": "תרגום טיוטה: עוד לא נבדק על ידי אדם. אם משהו לא ברור, עברו לאנגלית.",
+  "project.demo.view": "איך להציג את השלב",
+  "project.demo.tabDemo": "▶ הדגמה",
+  "project.demo.tabStill": "איור",
+  "project.demo.tabVideo": "סרטון",
+  "project.demo.play": "הפעלת ההדגמה",
+  "project.demo.pause": "השהיית ההדגמה",
+  "project.demo.next": "לשלב הבא בהדגמה",
+  "project.demo.steps": "שלבי ההדגמה",
+  "project.demo.frame": "{n}/{total}",
+  "project.demo.goto": "שלב {n}: {caption}",
 };
 
 const messages = { en, he };

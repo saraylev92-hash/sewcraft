@@ -169,7 +169,8 @@
       "alt": "The top edge folded down into a casing with stitching along its lower edge and a cord passing through."
     },
     {
-      "id": "b9", "stage": "assemble", "title": "Turn right side out",
+      "id": "b9",
+      "demo": {"name": "turn", "args": {"tone": "main"}}, "stage": "assemble", "title": "Turn right side out",
       "text": "Turn the bag right side out and push out the bottom corners. The tab loops should stick out of the side seams near the base.",
       "expert": "Turn RSO.",
       "pieces": ["body"],

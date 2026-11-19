@@ -133,13 +133,18 @@ export function validateProject(p: Project, techniques: Technique[]): Issue[] {
     if (!s.alt) err("9 visuals", `Step "${s.title}" has no image description.`);
     if (s.visual.type === "layout" && !matIds.has(s.visual.materialId)) err("9 visuals", `Step "${s.title}": layout for unknown material.`);
     if (s.visual.type === "scene") {
-      for (const el of s.visual.scene.els) {
+      for (const el of [...s.visual.scene.els, ...(s.visual.frames ?? []).flatMap((f) => f.els)]) {
         if (!SCENE_KINDS.has(el.k)) err("9 visuals", `Step "${s.title}": unknown scene element "${el.k}".`);
         if (el.k === "dim") { try { evaluate(el.value, vars); } catch (e) { err("7 dependent measurements", `Step "${s.title}" diagram: ${(e as Error).message}`); } }
       }
     }
     if (!s.text) err("content", `Step "${s.title || i + 1}" needs instructions.`);
     if (!s.title) err("content", `Step ${i + 1} needs a title.`);
+    if (s.visual.type === "scene" && s.visual.frames) {
+      if (s.visual.frames.length < 2) err("9 visuals", `Step "${s.title}": an animation needs at least 2 frames.`);
+      if (s.visual.frames.some((f) => !f.caption)) err("9 visuals", `Step "${s.title}": every animation frame needs a caption.`);
+    }
+    if (s.video && !/^(https:\/\/|\/)/.test(s.video.src)) err("9 visuals", `Step "${s.title}": video src must be an https URL or a site path.`);
     if (s.visual.type === "photo") warn("9 visuals", `Step "${s.title}" uses a photo — photos are never a source of measurements.`);
   }
 

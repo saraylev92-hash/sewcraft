@@ -28,7 +28,7 @@ const cap = (x: string) => x.charAt(0).toUpperCase() + x.slice(1);
 
 function matches(c: Card, q: string) {
   if (!q) return true;
-  const hay = [c.title, c.summary, c.category, ...c.tags, ...c.techniques, c.difficulty, ...c.materials.flatMap((m) => [m.name, ...(m.recommended ?? [])])].join(" ").toLowerCase();
+  const hay = [c.title, c.summary, c.he?.title ?? "", c.he?.summary ?? "", c.category, ...c.tags, ...c.techniques, c.difficulty, ...c.materials.flatMap((m) => [m.name, ...(m.recommended ?? [])])].join(" ").toLowerCase();
   if (/under\s*(\d)\s*hours?/.test(q)) return c.minutes[1] <= Number(q.match(/(\d)/)![1]) * 60;
   return q.toLowerCase().split(/\s+/).every((w) => hay.includes(w.replace(/s$/, "")));
 }
