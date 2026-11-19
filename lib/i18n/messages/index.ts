@@ -7,8 +7,9 @@ import discover from "./discover";
 import learn from "./learn";
 import studio from "./studio";
 import community from "./community";
+import garments from "./garments";
 
-const FILES = [common, project, sew, discover, learn, studio, community] as const;
+const FILES = [common, project, sew, discover, learn, studio, community, garments] as const;
 
 type Merge<T extends readonly { en: Record<string, string> }[]> = T[number]["en"];
 type EnAll = { [K in keyof UnionToIntersection<Merge<typeof FILES>>]: string };

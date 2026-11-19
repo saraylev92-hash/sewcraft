@@ -75,6 +75,10 @@ export interface State {
   stash: StashFabric[];
   shopping: { projects: string[]; checked: Record<string, boolean> };
   guides: Record<string, LocalGuide>;
+  /** Body measurements for garment patterns (FreeSewing names; mm, shoulderSlope in degrees). */
+  body?: Record<string, number>;
+  /** The size preset the body measurements started from, e.g. "f38". */
+  bodyPreset?: string;
 }
 
 const KEY = "sewcraft:v1";

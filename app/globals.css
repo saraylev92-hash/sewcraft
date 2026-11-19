@@ -149,6 +149,7 @@ input[type="checkbox"] { accent-color: var(--sage); }
 @media print {
   .no-print { display: none !important; }
   body { background: #fff; }
+  main#main { padding: 0 !important; } /* bottom padding for the mobile nav would spill onto an extra blank page */
 }
 
 /* Programmatic focus target for screen readers in guided mode — no visible ring needed. */
