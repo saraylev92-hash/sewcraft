@@ -24,6 +24,7 @@ Don't run `next build` while `next dev` is running — they share `.next/`. Stop
 - `lib/formula.ts` safe formula evaluator · `lib/resolve.ts` params → piece sizes/outlines · `lib/layout.ts` cutting-layout packer · `lib/needs.ts` fabric amounts.
 - `lib/templates.ts` — 29 parametric step illustrations (`{ "type": "template", "name": "hem", "args": {...} }`).
 - `components/scene/SceneView.tsx` (illustrations), `LayoutView.tsx` (cutting canvas), `PrintPattern.tsx` (1:1 tiled print: measurements, A4/Letter/A0, cover with assembly map; pieces packed onto shared pages by `lib/printLayout.ts`), `sew/SewMode.tsx` (guided mode), `community/GuideBuilder.tsx`.
+- `lib/garments/` + `components/garments/` — garment patterns at `/patterns`, drafted client-side by FreeSewing (MIT; credits in `THIRD_PARTY_NOTICES.md` and on every pattern). `designs.ts` = which designs + measurement labels; `draft.ts` = draft, then re-draft with our print layout. Body measurements live in `state.body` (mm, `shoulderSlope` in degrees). FreeSewing's pattern labels stay English.
 - `lib/store.ts` — all user state (profile, progress, prefs, stash, shopping, local community guides) behind a small `Repo` interface → the swap point for a future backend.
 - `scripts/authoring/` — the Python helpers used to write the bundled JSON (examples only; see its README before running).
 
@@ -40,6 +41,7 @@ Don't run `next build` while `next dev` is running — they share `.next/`. Stop
 
 - Fonts are self-hosted in `app/fonts` via `next/font/local`. `next/font/google` + Turbopack broke every page (Google sometimes returns `/l/font?kit=` URLs) — don't switch back.
 - `useStore(selector)` must return stable references (state slices or primitives), never new objects/arrays, or React loops.
+- FreeSewing packages: pin all `@freesewing/*` to the same version, and list the plugins `core-plugins` imports explicitly in package.json (they are not declared as its dependencies).
 - Static export: no server routes/APIs, no `next/image` optimisation; dynamic project routes use `generateStaticParams`. Local community guides render client-side under `/community/guide/?id=…`.
 
 ## Status / next ideas

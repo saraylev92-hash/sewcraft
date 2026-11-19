@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 import { useStore, useHydrated } from "@/lib/store";
-import { IconBook, IconCalc, IconHome, IconNeedle, IconSearch, IconStudio, IconUsers } from "./icons";
+import { IconBook, IconCalc, IconHome, IconNeedle, IconRuler, IconSearch, IconStudio, IconUsers } from "./icons";
 import Onboarding from "./Onboarding";
 import Toaster from "./Toaster";
 import UnitToggle from "./UnitToggle";
@@ -15,6 +15,7 @@ const NAV: { href: string; label: MessageKey; icon: typeof IconHome; mobile: boo
   { href: "/explore", label: "nav.explore", icon: IconSearch, mobile: true },
   { href: "/community", label: "nav.community", icon: IconUsers, mobile: true },
   { href: "/techniques", label: "nav.learn", icon: IconBook, mobile: true },
+  { href: "/patterns", label: "garments.nav", icon: IconRuler, mobile: false },
   { href: "/calculator", label: "nav.calculator", icon: IconCalc, mobile: false },
   { href: "/studio", label: "nav.studio", icon: IconStudio, mobile: true },
 ];
