@@ -23,7 +23,7 @@ Don't run `next build` while `next dev` is running — they share `.next/`. Stop
 - `lib/validate.ts` — the content rules (geometry at every param extreme, seam allowances, piece references across materials → cutting → steps, generated layouts fit, stage order, a visual + alt for every step, reviewer for published editorial).
 - `lib/formula.ts` safe formula evaluator · `lib/resolve.ts` params → piece sizes/outlines · `lib/layout.ts` cutting-layout packer · `lib/needs.ts` fabric amounts.
 - `lib/templates.ts` — 29 parametric step illustrations (`{ "type": "template", "name": "hem", "args": {...} }`).
-- `components/scene/SceneView.tsx` (illustrations), `LayoutView.tsx` (cutting canvas), `PrintPattern.tsx` (1:1 tiled print), `sew/SewMode.tsx` (guided mode), `community/GuideBuilder.tsx`.
+- `components/scene/SceneView.tsx` (illustrations), `LayoutView.tsx` (cutting canvas), `PrintPattern.tsx` (1:1 tiled print: measurements, A4/Letter/A0, cover with assembly map; pieces packed onto shared pages by `lib/printLayout.ts`), `sew/SewMode.tsx` (guided mode), `community/GuideBuilder.tsx`.
 - `lib/store.ts` — all user state (profile, progress, prefs, stash, shopping, local community guides) behind a small `Repo` interface → the swap point for a future backend.
 - `scripts/authoring/` — the Python helpers used to write the bundled JSON (examples only; see its README before running).
 
